@@ -1,0 +1,26 @@
+{
+  "bundles": [
+    {
+      "name": "level-1",
+      "assets": [
+        {
+          "name": "background",
+          "srcs": "/src/assets/background/Blue_Nebula_05-1024x1024.png"
+        },
+        {
+          "name": "ship",
+          "srcs": "/src/assets/ship/128x128.png"
+        },
+        {
+          "name": "exhaust",
+          "srcs": [
+            "/src/assets/exhaust/1.png",
+            "/src/assets/exhaust/2.png",
+            "/src/assets/exhaust/3.png",
+            "/src/assets/exhaust/4.png"
+          ]
+        }
+      ]
+    }
+  ]
+}
