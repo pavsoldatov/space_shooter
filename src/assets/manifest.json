@@ -12,13 +12,12 @@
           "srcs": "/src/assets/ship/128x128.png"
         },
         {
-          "name": "exhaust",
-          "srcs": [
-            "/src/assets/exhaust/1.png",
-            "/src/assets/exhaust/2.png",
-            "/src/assets/exhaust/3.png",
-            "/src/assets/exhaust/4.png"
-          ]
+          "name": "exhaust-normal",
+          "srcs": "/src/assets/exhaust/normal/spritesheet.png"
+        },
+        {
+          "name": "exhaust-turbo",
+          "srcs": "/src/assets/exhaust/turbo/spritesheet.png"
         }
       ]
     }

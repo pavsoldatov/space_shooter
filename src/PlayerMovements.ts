@@ -3,13 +3,13 @@ import { constants } from "./constants";
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
 
 type KeyboardKeysType = typeof constants.keyboardKeys;
-type PressedKeyType = KeyboardKeysType[keyof KeyboardKeysType] | null;
+export type PressedKeyType = KeyboardKeysType[keyof KeyboardKeysType];
 
 export class PlayerMovements {
   private xSpeed: number = 0;
   private keydownListener: (e: KeyboardEvent) => void;
   private keyupListener: (e: KeyboardEvent) => void;
-  private pressedKey: PressedKeyType = null;
+  private pressedKey: PressedKeyType | null = null;
 
   constructor() {
     this.keydownListener = (e: KeyboardEvent) => this.onKeyDown(e);
