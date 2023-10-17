@@ -52,6 +52,6 @@ export class PlayerShip {
 
     // console.log(this.movements.getPressedKey())
     this.boundsChecker?.update(delta, this.movements.getXSpeed());
-    this.exhaust?.update(this.ship!.position._x, this.movements.getPressedKey());
+    this.exhaust?.update(this.ship!.position._x, this.movements.getPressedKey()!);
   }
 }
