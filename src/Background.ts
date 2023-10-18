@@ -1,6 +1,6 @@
 import { Application, TilingSprite, Assets } from "pixi.js";
 
-import backgroundSrc from "/src/assets/background/Blue_Nebula_05-1024x1024.png";
+import backgroundSrc from "./assets/background/Blue_Nebula_05-1024x1024.png";
 import { constants } from "./constants";
 
 export class Background {

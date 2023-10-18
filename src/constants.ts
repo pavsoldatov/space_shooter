@@ -13,5 +13,10 @@ export const constants = {
         ARROW_LEFT: "ARROWLEFT",
         ARROW_RIGHT: "ARROWRIGHT",
         // SPACE: "",
+    },
+    animation: {
+        exhaust: {
+            SPEED: 0.14
+        }
     }
 } as const;
