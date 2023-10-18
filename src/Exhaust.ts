@@ -1,4 +1,4 @@
-import { AnimatedSprite, Application, Spritesheet, Assets } from "pixi.js";
+import { AnimatedSprite, Application, Spritesheet, BaseTexture } from "pixi.js";
 
 import { constants } from "./constants";
 import atlasNormal from "./assets/exhaust/normal/atlas.json";
@@ -8,19 +8,14 @@ import { PressedKeyType } from "./PlayerMovements";
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
 
 type Position = { x: number; y: number };
-type SpritesheetId = "exhaust-normal" | "exhaust-turbo";
 type ExhaustAtlas = typeof atlasNormal | typeof atlasTurbo;
 
 export class Exhaust {
   private app: Application;
   private normalExhaustRight: AnimatedSprite | null = null;
   private normalExhaustLeft: AnimatedSprite | null = null;
-  private turboExhaustLeft: AnimatedSprite | null = null;
-  private turboExhaustRight: AnimatedSprite | null = null;
-  private exhaustState = {
-    normal: "exhaust-normal",
-    turbo: "exhaust-turbo",
-  } as const;
+  private turboExhaust: AnimatedSprite | null = null;
+
   private position: Position | null = null;
   private readonly offsetY = 48;
   private readonly offsetX = 25.6;
@@ -33,71 +28,81 @@ export class Exhaust {
   }
 
   public async init() {
-    this.normalExhaustLeft = await this.createExhaust(
-      atlasNormal,
-      this.exhaustState.normal
+    const normalExhaust = await this.loadExhaustTexture(atlasNormal);
+    const turboExhaust = await this.loadExhaustTexture(atlasTurbo);
+
+    this.normalExhaustLeft = this.createExhaustAnimation(normalExhaust);
+    this.normalExhaustRight = this.createExhaustAnimation(normalExhaust);
+    this.turboExhaust = this.createExhaustAnimation(turboExhaust);
+    this.app.stage.addChild(
+      this.normalExhaustLeft,
+      this.normalExhaustRight,
+      this.turboExhaust
     );
-    this.normalExhaustRight = await this.createExhaust(
-      atlasNormal,
-      this.exhaustState.normal
-    );
-    this.turboExhaustLeft = await this.createExhaust(
-      atlasTurbo,
-      this.exhaustState.turbo
-    );
-    this.turboExhaustRight = await this.createExhaust(
-      atlasTurbo,
-      this.exhaustState.turbo
-    );
-    console.log(this.normalExhaustLeft.textures);
 
     // TODO?: change this.app to new Container (== PlayerShip) and position accordingly
   }
 
-  private async createExhaust(
-    atlas: ExhaustAtlas,
-    spritesheetId: SpritesheetId
-  ) {
-    // console.log(atlas.meta.image); // TODO?: Get the atlas image from cache if possible (pretty sure it is)
-
-    const texture = await Assets.load(spritesheetId);
+  private async loadExhaustTexture(atlas: ExhaustAtlas) {
+    const texture = BaseTexture.from(atlas.meta.image);
     const spritesheet = new Spritesheet(texture, atlas);
-
     await spritesheet.parse();
-    const animation = new AnimatedSprite(spritesheet.animations.sequence);
+    return spritesheet;
+  }
 
+  private createExhaustAnimation(spritesheet: Spritesheet<ExhaustAtlas>) {
+    const animation = new AnimatedSprite(spritesheet.animations.sequence);
     animation.y = this.position!.y + this.offsetY;
     animation.anchor.set(0.5);
     animation.animationSpeed = constants.animation.exhaust.SPEED;
     animation.play();
-
     return animation;
   }
 
+  private toggleVisibility(turbo: boolean, left: boolean, right: boolean) {
+    if (
+      !this.turboExhaust ||
+      !this.normalExhaustLeft ||
+      !this.normalExhaustRight
+    ) {
+      console.error(`Missing the exhaust`);
+      return;
+    }
+
+    this.turboExhaust.visible = turbo;
+    this.normalExhaustLeft.visible = left;
+    this.normalExhaustRight.visible = right;
+
+    turbo ? this.turboExhaust.play() : this.turboExhaust.stop();
+    left ? this.normalExhaustLeft.play() : this.normalExhaustLeft.stop();
+    right ? this.normalExhaustRight.play() : this.normalExhaustRight.stop();
+  }
+
   public update(x: number, pressedKey: PressedKeyType) {
+    if (
+      !this.normalExhaustLeft ||
+      !this.normalExhaustRight ||
+      !this.turboExhaust
+    ) {
+      console.error("No exhaust in update");
+      return;
+    }
+
     switch (pressedKey) {
       case ARROW_LEFT:
-        this.app.stage.removeChild(this.turboExhaustRight!);
-        this.app.stage.addChild(this.turboExhaustLeft!);
-        this.app.stage.removeChild(this.normalExhaustLeft!);
-        this.turboExhaustLeft!.x = x - this.offsetX;
-        this.normalExhaustRight!.x = x + this.offsetX;
+        this.toggleVisibility(true, false, true);
+        this.normalExhaustRight.x = x + this.offsetX;
+        this.turboExhaust.x = x - this.offsetX;
         break;
       case ARROW_RIGHT:
-        this.app.stage.removeChild(this.turboExhaustLeft!);
-        this.app.stage.addChild(this.turboExhaustRight!);
-        this.app.stage.removeChild(this.normalExhaustRight!);
-        this.turboExhaustRight!.x = x + this.offsetX;
-        this.normalExhaustLeft!.x = x - this.offsetX;
+        this.toggleVisibility(true, true, false);
+        this.turboExhaust.x = x + this.offsetX;
+        this.normalExhaustLeft.x = x - this.offsetX;
         break;
       default:
-        this.app.stage.removeChild(this.turboExhaustLeft!);
-        this.app.stage.removeChild(this.turboExhaustRight!);
-
-        this.normalExhaustRight!.x = x + this.offsetX;
-        this.normalExhaustLeft!.x = x - this.offsetX;
-        this.app.stage.addChild(this.normalExhaustLeft!);
-        this.app.stage.addChild(this.normalExhaustRight!);
+        this.toggleVisibility(false, true, true);
+        this.normalExhaustRight.x = x + this.offsetX;
+        this.normalExhaustLeft.x = x - this.offsetX;
     }
   }
 }

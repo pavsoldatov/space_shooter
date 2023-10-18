@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, SpriteSource } from "pixi.js";
+import { Application, Assets, DisplayObject, Sprite, SpriteSource } from "pixi.js";
 
 import { constants } from "./constants";
 import { BoundsChecker } from "./BoundsChecker";
@@ -30,7 +30,7 @@ export class PlayerShip {
     }
 
     this.initShip(shipSource);
-    console.log(this.ship)
+    // console.log(this.ship)
   }
 
   private initShip(shipSprite: SpriteSource) {
@@ -40,7 +40,7 @@ export class PlayerShip {
       APP_WIDTH / 2,
       APP_HEIGHT - this.ship.texture.width / 2
     );
-    this.app.stage.addChild(this.ship);
+    this.app.stage.addChild(this.ship as DisplayObject);
     this.boundsChecker = new BoundsChecker(this.ship);
 
     this.exhaust = new Exhaust(this.app, {x: 1, y: this.ship.position.y});
