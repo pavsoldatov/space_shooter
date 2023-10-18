@@ -100,7 +100,7 @@
   "meta": {
     "app": "http://free-tex-packer.com",
     "version": "0.6.7",
-    "image": "/src/assets/exhaust/turbo/spritesheet.png",
+    "image": "./assets/exhaust/turbo/spritesheet.png",
     "format": "RGBA8888",
     "size": {
       "w": 128,
