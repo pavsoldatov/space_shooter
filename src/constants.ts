@@ -4,7 +4,7 @@ export const constants = {
     APP_HEIGHT: 720,
   },
   player: {
-    PLAYER_SPEED: 6.5,
+    PLAYER_SPEED: 7,
   },
   background: {
     BACKGROUND_SPEED: 0.5,

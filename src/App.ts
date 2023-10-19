@@ -31,7 +31,7 @@ class App {
     this.initAssets().then(() => {
       this.background = new Background(this.app);
       this.playerShip = new PlayerShip(this.app);
-      this.asteroidGroup = new AsteroidGroup(this.app, 9);
+      this.asteroidGroup = new AsteroidGroup(this.app, 8);
       this.gameTimer = new GameTimer(this.app);
     });
 

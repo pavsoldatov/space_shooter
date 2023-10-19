@@ -1,36 +1,38 @@
 import { Application, Graphics } from "pixi.js";
 
 class Asteroid {
-  asteroid: Graphics;
-  app: Application;
-  speed: number;
-  isFalling: boolean;
-  fallDelay: number;
+  private asteroid: Graphics;
+  private app: Application;
+  private speed: number;
+  private isFalling: boolean;
+  private fallDelay: number;
+  private radius: number;
 
   constructor(app: Application) {
     this.app = app;
+    this.radius = 20; // should be ship's width / 2 ???
     this.asteroid = new Graphics();
     this.asteroid.beginFill(0xff0000);
-    this.asteroid.drawCircle(0, 0, 20);
+    this.asteroid.drawCircle(0, 0, this.radius);
+    //! An asteroid's width cannot be less than that of the ship (its diameter).
 
-    this.asteroid.x = Math.random() * (app.screen.width - 40) + 20;
-    this.asteroid.y = -20;
-    this.speed = 1.5;
+    this.asteroid.x =
+      Math.random() * (app.screen.width - 56) + 56; // 56 is 1/2 of ship's width
+    this.asteroid.y = -this.radius;
+    this.speed = 1 + Math.random();
     this.isFalling = false;
     this.fallDelay = Math.random() * (3000 - 200) + 200;
-      // Math.max(Math.random() * 3000, Math.random() * 5000) - 1000;
     app.stage.addChild(this.asteroid);
   }
 
-  private handleFalling(delta: number) {
+  private spawn(delta: number) {
     this.fallDelay -= delta;
-    // console.log(this.fallDelay);
     if (this.fallDelay <= 0) {
       this.isFalling = true;
     }
   }
 
-  private handleRemoval(delta: number) {
+  private fall(delta: number) {
     this.asteroid.y += this.speed * delta;
     if (this.asteroid.y > this.app.screen.height) {
       this.app.stage.removeChild(this.asteroid);
@@ -38,23 +40,23 @@ class Asteroid {
   }
 
   update(delta: number) {
-    this.isFalling ? this.handleRemoval(delta) : this.handleFalling(delta);
+    this.isFalling ? this.fall(delta) : this.spawn(delta);
   }
 }
 
 export class AsteroidGroup {
   app: Application;
   asteroids: Asteroid[];
-  maxAsteroids: number;
+  quantity: number;
 
-  constructor(app: Application, maxAsteroids: number) {
+  constructor(app: Application, quantity: number) {
     this.app = app;
     this.asteroids = [];
-    this.maxAsteroids = maxAsteroids;
+    this.quantity = quantity;
   }
 
   spawnAsteroid() {
-    if (this.asteroids.length < this.maxAsteroids) {
+    if (this.asteroids.length < this.quantity) {
       const asteroid = new Asteroid(this.app);
       this.asteroids.push(asteroid);
     }
