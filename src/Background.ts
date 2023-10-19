@@ -1,20 +1,19 @@
 import { Application, TilingSprite, Assets } from "pixi.js";
 
-import backgroundSrc from "./assets/background/Blue_Nebula_05-1024x1024.png";
 import { constants } from "./constants";
 
 export class Background {
   private tiles: TilingSprite | null = null;
   private app: Application;
 
-  constructor(app: Application<HTMLCanvasElement>) {
+  constructor(app: Application) {
     this.app = app;
 
     this.init();
   }
 
   public async init() {
-    const texture = await Assets.load(backgroundSrc);
+    const texture = await Assets.load("background");
 
     this.tiles = new TilingSprite(
       texture,

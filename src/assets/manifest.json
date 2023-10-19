@@ -5,19 +5,23 @@
       "assets": [
         {
           "name": "background",
-          "srcs": "/src/assets/background/Blue_Nebula_05-1024x1024.png"
+          "srcs": "./src/assets/background/Blue_Nebula_05-1024x1024.png"
         },
         {
           "name": "ship",
-          "srcs": "/src/assets/ship/128x128.png"
+          "srcs": "./src/assets/ship/128x128.png"
         },
         {
           "name": "exhaustNormal",
-          "srcs": "/src/assets/exhaust/normal/spritesheet.png"
+          "srcs": "./src/assets/exhaust/normal/spritesheet.png"
         },
         {
           "name": "exhaustTurbo",
-          "srcs": "/src/assets/exhaust/turbo/spritesheet.png"
+          "srcs": "./src/assets/exhaust/turbo/spritesheet.png"
+        },
+        {
+          "name": "font",
+          "srcs": "https://pixijs.com/assets/bitmap-font/desyrel.xml"
         }
       ]
     }
