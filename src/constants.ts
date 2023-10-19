@@ -4,10 +4,10 @@ export const constants = {
     APP_HEIGHT: 720,
   },
   player: {
-    SPEED: 6.5,
+    PLAYER_SPEED: 6.5,
   },
   background: {
-    SPEED: 0.5,
+    BACKGROUND_SPEED: 0.5,
   },
   keyboardKeys: {
     ARROW_LEFT: "ARROWLEFT",
@@ -16,10 +16,14 @@ export const constants = {
   },
   animation: {
     exhaust: {
-      SPEED: 0.14,
+      EXHAUST_SPEED: 0.14,
     },
   },
   timers: {
     GAME_TIME: 60,
   },
+  fonts: {
+    FONT_NAME: "Desyrel",
+    FONT_SIZE: 48,
+  }
 } as const;

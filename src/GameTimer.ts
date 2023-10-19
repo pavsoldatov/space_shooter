@@ -3,6 +3,7 @@ import { Application, Assets, BitmapText } from "pixi.js";
 import { constants } from "./constants";
 
 const { GAME_TIME } = constants.timers;
+const { FONT_SIZE, FONT_NAME } = constants.fonts;
 
 export class GameTimer {
   app: Application;
@@ -19,8 +20,8 @@ export class GameTimer {
   private init() {
     Assets.load("font").then(() => {
       this.bitmapText = new BitmapText(`Time: ${this.gameTime} seconds`, {
-        fontName: "Desyrel",
-        fontSize: 48,
+        fontName: FONT_NAME,
+        fontSize: FONT_SIZE,
       });
       this.bitmapText.anchor.set(0.5, 0);
       this.bitmapText.x =

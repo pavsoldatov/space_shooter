@@ -7,6 +7,8 @@ import { PressedKeyType } from "./PlayerMovements";
 
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
 
+const { EXHAUST_SPEED } = constants.animation.exhaust;
+
 type Position = { x: number; y: number };
 type ExhaustAtlas = typeof atlasNormal | typeof atlasTurbo;
 
@@ -54,7 +56,7 @@ export class Exhaust {
     const animation = new AnimatedSprite(spritesheet.animations.sequence);
     animation.y = this.position!.y + this.offsetY;
     animation.anchor.set(0.5);
-    animation.animationSpeed = constants.animation.exhaust.SPEED;
+    animation.animationSpeed = EXHAUST_SPEED;
     animation.play();
     return animation;
   }

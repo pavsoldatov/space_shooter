@@ -2,6 +2,8 @@ import { Application, TilingSprite, Assets } from "pixi.js";
 
 import { constants } from "./constants";
 
+const { BACKGROUND_SPEED } = constants.background;
+
 export class Background {
   private tiles: TilingSprite | null = null;
   private app: Application;
@@ -25,7 +27,7 @@ export class Background {
 
   public update(delta: number) {
     if (this.tiles) {
-      this.tiles.tilePosition.y += constants.background.SPEED * delta;
+      this.tiles.tilePosition.y += BACKGROUND_SPEED * delta;
     }
   }
 }
