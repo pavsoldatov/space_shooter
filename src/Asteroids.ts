@@ -1,5 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 
+import { limitInRange } from "./utils.ts";
+
 class Asteroid {
   private asteroid: Graphics;
   private app: Application;
@@ -16,12 +18,16 @@ class Asteroid {
     this.asteroid.drawCircle(0, 0, this.radius);
     //! An asteroid's width cannot be less than that of the ship (its diameter).
 
-    this.asteroid.x =
-      Math.random() * (app.screen.width - 56) + 56; // 56 is 1/2 of ship's width
+    this.asteroid.x = limitInRange(
+      Math.random() * app.screen.width,
+      56 + this.radius,
+      app.screen.width - (56 + this.radius)
+    ); // 56 is 1/2 of ship's width
     this.asteroid.y = -this.radius;
     this.speed = 1 + Math.random();
     this.isFalling = false;
     this.fallDelay = Math.random() * (3000 - 200) + 200;
+
     app.stage.addChild(this.asteroid);
   }
 
