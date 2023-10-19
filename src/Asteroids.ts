@@ -13,30 +13,32 @@ class Asteroid {
     this.asteroid.beginFill(0xff0000);
     this.asteroid.drawCircle(0, 0, 20);
 
-    this.asteroid.x = Math.random() * (app.screen.width - 40) + 20; 
+    this.asteroid.x = Math.random() * (app.screen.width - 40) + 20;
     this.asteroid.y = -20;
     this.speed = 1.5;
     this.isFalling = false;
-    this.fallDelay =
-      Math.max(Math.random() * 3000, Math.random() * 5000) - 1000;
+    this.fallDelay = Math.random() * (3000 - 200) + 200;
+      // Math.max(Math.random() * 3000, Math.random() * 5000) - 1000;
     app.stage.addChild(this.asteroid);
   }
 
-  update(delta: number) {
-    if (!this.isFalling) {
-      console.log(this.fallDelay);
-      this.fallDelay -= delta;
-      if (this.fallDelay <= 0) {
-        this.isFalling = true;
-      }
+  private handleFalling(delta: number) {
+    this.fallDelay -= delta;
+    console.log(this.fallDelay);
+    if (this.fallDelay <= 0) {
+      this.isFalling = true;
     }
+  }
 
-    if (this.isFalling) {
-      this.asteroid.y += this.speed * delta;
-      if (this.asteroid.y > this.app.screen.height) {
-        this.app.stage.removeChild(this.asteroid);
-      }
+  private handleRemoval(delta: number) {
+    this.asteroid.y += this.speed * delta;
+    if (this.asteroid.y > this.app.screen.height) {
+      this.app.stage.removeChild(this.asteroid);
     }
+  }
+
+  update(delta: number) {
+    this.isFalling ? this.handleRemoval(delta) : this.handleFalling(delta);
   }
 }
 

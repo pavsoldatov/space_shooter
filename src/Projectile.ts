@@ -1,4 +1,4 @@
-import { Application, Graphics, Sprite, Texture } from "pixi.js";
+import { Application, Graphics } from "pixi.js";
 
 export class Projectile {
   public projectile: Graphics;
@@ -9,7 +9,7 @@ export class Projectile {
     this.app = app;
     this.projectile = new Graphics();
     this.projectile.beginFill(0x00ff00);
-    this.projectile.drawCircle(0, 0, 20);
+    this.projectile.drawCircle(0, 0, 5);
     this.projectile.x = x;
     this.projectile.y = y;
     this.speed = 5;
