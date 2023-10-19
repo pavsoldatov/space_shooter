@@ -1,6 +1,7 @@
 import { constants } from "./constants";
 
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
+const { PLAYER_SPEED } = constants.player;
 
 type KeyboardKeysType = typeof constants.keyboardKeys;
 export type PressedKeyType = KeyboardKeysType[keyof KeyboardKeysType];
@@ -38,11 +39,11 @@ export class PlayerMovements {
   private onKeyDown(e: KeyboardEvent) {
     switch (e.key.toUpperCase()) {
       case ARROW_LEFT:
-        this.xSpeed = -constants.player.SPEED;
+        this.xSpeed = -PLAYER_SPEED;
         this.pressedKey = ARROW_LEFT;
         break;
       case ARROW_RIGHT:
-        this.xSpeed = constants.player.SPEED;
+        this.xSpeed = PLAYER_SPEED;
         this.pressedKey = ARROW_RIGHT;
         break;
     }
