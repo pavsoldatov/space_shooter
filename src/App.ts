@@ -7,6 +7,7 @@ import { PlayerShip } from "./PlayerShip";
 import manifest from "./assets/manifest.json";
 import { AsteroidGroup } from "./Asteroids";
 import { Projectile } from "./Projectile";
+import { GameTimer } from "./GameTimer";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 
@@ -16,6 +17,7 @@ class App {
   private playerShip: PlayerShip | null = null;
   private asteroidGroup: AsteroidGroup | null = null;
   private playerProjectiles: Projectile[] | null = null;
+  private gameTimer: GameTimer | null = null;
 
   constructor() {
     this.app = new Application({
@@ -30,6 +32,7 @@ class App {
       this.background = new Background(this.app);
       this.playerShip = new PlayerShip(this.app);
       this.asteroidGroup = new AsteroidGroup(this.app, 9);
+      this.gameTimer = new GameTimer(this.app);
     });
 
     this.app.ticker.add((delta) => this.update(delta));
@@ -55,6 +58,7 @@ class App {
     this.background?.update(delta);
     this.asteroidGroup?.update(delta);
     this.playerShip?.update(delta);
+    this.gameTimer?.update(); // relies on Date.now() instead of delta;
   }
 }
 

@@ -18,6 +18,10 @@
         {
           "name": "exhaustTurbo",
           "srcs": "./src/assets/exhaust/turbo/spritesheet.png"
+        },
+        {
+          "name": "font",
+          "srcs": "https://pixijs.com/assets/bitmap-font/desyrel.xml"
         }
       ]
     }

@@ -24,7 +24,7 @@ class Asteroid {
 
   private handleFalling(delta: number) {
     this.fallDelay -= delta;
-    console.log(this.fallDelay);
+    // console.log(this.fallDelay);
     if (this.fallDelay <= 0) {
       this.isFalling = true;
     }
@@ -46,6 +46,7 @@ export class AsteroidGroup {
   app: Application;
   asteroids: Asteroid[];
   maxAsteroids: number;
+
   constructor(app: Application, maxAsteroids: number) {
     this.app = app;
     this.asteroids = [];
