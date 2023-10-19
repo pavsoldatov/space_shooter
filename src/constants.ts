@@ -12,7 +12,6 @@ export const constants = {
   keyboardKeys: {
     ARROW_LEFT: "ARROWLEFT",
     ARROW_RIGHT: "ARROWRIGHT",
-    // SPACE: "",
   },
   animation: {
     exhaust: {
@@ -21,6 +20,7 @@ export const constants = {
   },
   timers: {
     GAME_TIME: 60,
+    SHOOTING_DELAY: 0.75 // seconds
   },
   fonts: {
     FONT_NAME: "Desyrel",
