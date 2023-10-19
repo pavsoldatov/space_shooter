@@ -7,7 +7,7 @@ const { GAME_TIME } = constants.timers;
 export class GameTimer {
   app: Application;
   bitmapText: BitmapText | null = null;
-  gameTime: number = GAME_TIME;
+  gameTime: number = GAME_TIME + 1; // +1 for human-intuitive calculation (61 to 1);
   startTime: number | null = null;
   gameEnded: boolean = false;
 
@@ -23,7 +23,8 @@ export class GameTimer {
         fontSize: 48,
       });
       this.bitmapText.anchor.set(0.5, 0);
-      this.bitmapText.x = this.app.screen.width - this.bitmapText.textWidth / 2 - 20;
+      this.bitmapText.x =
+        this.app.screen.width - this.bitmapText.textWidth / 2 - 20;
       this.startTime = Date.now();
 
       this.app.stage.addChild(this.bitmapText);
@@ -33,7 +34,7 @@ export class GameTimer {
   private checkGameStatus(elapsedTime: number) {
     if (this.bitmapText) {
       switch (true) {
-        case this.gameTime < elapsedTime:
+        case this.gameTime < elapsedTime + 1: // for human-intuitive calculation (61 to 1);
           this.bitmapText.text = `You lost`;
           this.gameEnded = true;
           this.app.ticker.stop();
