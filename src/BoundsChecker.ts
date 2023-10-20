@@ -1,4 +1,5 @@
 import { Sprite } from "pixi.js";
+
 import { constants } from "./constants";
 
 const { APP_WIDTH } = constants.resolution;

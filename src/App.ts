@@ -1,12 +1,17 @@
 import { Application, Assets } from "pixi.js";
 
 import "./style.css";
-import manifest from "./assets/manifest.json";
+import { manifest } from "./assets";
 import { constants } from "./constants";
-import { Background } from "./Background";
-import { PlayerShip } from "./PlayerShip";
-import { AsteroidGroup } from "./Asteroids";
-import { GameTimer } from "./GameTimer";
+import {
+  Background,
+  PlayerShip,
+  AsteroidGroup,
+  GameTimer,
+  CollisionDetector,
+  ProjectileGroup,
+  HitCounter,
+} from "./";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 
@@ -15,7 +20,10 @@ class App {
   private background: Background | null = null;
   private playerShip: PlayerShip | null = null;
   private asteroidGroup: AsteroidGroup | null = null;
+  private projectiles: ProjectileGroup | null = null;
   private gameTimer: GameTimer | null = null;
+  private collisionDetector: CollisionDetector | null = null;
+  private hitCounter: HitCounter | null = null;
 
   constructor() {
     this.app = new Application({
@@ -28,9 +36,17 @@ class App {
 
     this.initAssets().then(() => {
       this.background = new Background(this.app);
-      this.playerShip = new PlayerShip(this.app);
-      this.asteroidGroup = new AsteroidGroup(this.app, 8);
+      this.hitCounter = new HitCounter(this.app);
+      this.asteroidGroup = new AsteroidGroup(this.app);
       this.gameTimer = new GameTimer(this.app);
+      this.projectiles = new ProjectileGroup(this.app);
+      this.playerShip = new PlayerShip(this.app, this.projectiles);
+      this.collisionDetector = new CollisionDetector(
+        this.app,
+        this.projectiles,
+        this.asteroidGroup,
+        this.hitCounter
+      );
     });
 
     this.app.ticker.add((delta) => this.update(delta));
@@ -46,6 +62,7 @@ class App {
     this.asteroidGroup?.update(delta);
     this.playerShip?.update(delta);
     this.gameTimer?.update(); // relies on Date.now() instead of delta;
+    this.collisionDetector?.checkCollisions();
   }
 }
 
