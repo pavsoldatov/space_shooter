@@ -1,5 +1,5 @@
-import manifest from "./manifest.json"
-import atlasNormal from "./exhaust/normal/atlas.json";
-import atlasTurbo from "./exhaust/turbo/atlas.json";
+import manifest from "./manifest";
+import { atlas as atlasNormal } from "./exhaust/normal/atlas";
+import { atlas as atlasTurbo } from "./exhaust/turbo/atlas";
 
-export {manifest, atlasNormal, atlasTurbo}
+export { manifest, atlasNormal, atlasTurbo };
