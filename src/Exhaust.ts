@@ -1,12 +1,10 @@
 import { AnimatedSprite, Application, Spritesheet, BaseTexture } from "pixi.js";
 
 import { constants } from "./constants";
-import atlasNormal from "./assets/exhaust/normal/atlas.json";
-import atlasTurbo from "./assets/exhaust/turbo/atlas.json";
-import { PressedKeyType } from "./PlayerMovements";
+import { atlasNormal, atlasTurbo } from "./assets";
+import { PressedKeyType } from "./";
 
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
-
 const { EXHAUST_SPEED } = constants.animation.exhaust;
 
 type Position = { x: number; y: number };

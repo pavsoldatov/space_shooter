@@ -1,9 +1,12 @@
-import { Application, Assets, Sprite, SpriteSource } from "pixi.js";
+import { Application, Assets, Sprite, TextureSource } from "pixi.js";
 import { constants } from "./constants";
-import { BoundsChecker } from "./BoundsChecker";
-import { PlayerMovements } from "./PlayerMovements";
-import { Exhaust } from "./Exhaust";
-import { ProjectileGroup } from "./Projectile";
+import {
+  BoundsChecker,
+  PlayerMovements,
+  Exhaust,
+  ProjectileGroup,
+  AmmoCounter,
+} from "./";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 const { SHOOTING_DELAY } = constants.timers;
@@ -16,17 +19,19 @@ export class PlayerShip {
   private exhaust: Exhaust | null = null;
   private projectiles: ProjectileGroup;
   private canShoot: boolean = true;
+  private ammoCounter: AmmoCounter;
 
-  constructor(app: Application) {
+  constructor(app: Application, projectiles: ProjectileGroup) {
     this.app = app;
-    this.projectiles = new ProjectileGroup(this.app);
+    this.projectiles = projectiles;
+    this.ammoCounter = new AmmoCounter(this.app);
     this.init();
 
     document.addEventListener("keydown", (e) => this.handleShooting(e));
   }
 
   async init() {
-    const shipSource: SpriteSource = await Assets.load("ship");
+    const shipSource: TextureSource = await Assets.load("ship");
 
     if (!shipSource) {
       console.error(`Ship asset not loaded. The asset is ${shipSource}.`);
@@ -51,6 +56,7 @@ export class PlayerShip {
       if (this.canShoot) {
         this.projectiles.add(x, y);
         this.canShoot = false;
+        this.ammoCounter.decrementAmmoCount();
         setTimeout(() => {
           this.canShoot = true;
         }, SHOOTING_DELAY * 1000);

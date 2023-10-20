@@ -6,11 +6,11 @@ const { GAME_TIME } = constants.timers;
 const { FONT_SIZE, FONT_NAME } = constants.fonts;
 
 export class GameTimer {
-  app: Application;
-  bitmapText: BitmapText | null = null;
-  gameTime: number = GAME_TIME + 1; // +1 for human-intuitive calculation (61 to 1);
-  startTime: number | null = null;
-  gameEnded: boolean = false;
+  private app: Application;
+  private bitmapText: BitmapText | null = null;
+  private gameTime: number = GAME_TIME + 1; // +1 for human-intuitive calculation (61 to 1);
+  private startTime: number | null = null;
+  private gameEnded: boolean = false;
 
   constructor(app: Application) {
     this.app = app;
@@ -36,7 +36,7 @@ export class GameTimer {
     if (this.bitmapText) {
       switch (true) {
         case this.gameTime < elapsedTime + 1: // for human-intuitive calculation (61 to 1);
-          this.bitmapText.text = `You lost`;
+          this.bitmapText.text = `YOU LOSE`;
           this.gameEnded = true;
           this.app.ticker.stop();
           break;
@@ -45,6 +45,10 @@ export class GameTimer {
           this.bitmapText.text = `Time: ${Math.floor(remainingTime)} seconds`;
       }
     }
+  }
+  
+  getGameTime() {
+    return this.gameTime;
   }
 
   update() {

@@ -22,6 +22,10 @@
         {
           "name": "font",
           "srcs": "https://pixijs.com/assets/bitmap-font/desyrel.xml"
+        },
+        {
+          "name": "asteroid",
+          "srcs": "./src/assets/meteors/Meteor_02.png"
         }
       ]
     }

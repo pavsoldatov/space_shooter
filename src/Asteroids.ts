@@ -1,69 +1,73 @@
-import { Application, Graphics } from "pixi.js";
+import { Application, Assets, Sprite, Texture } from "pixi.js";
 
 import { limitInRange } from "./utils.ts";
 
-class Asteroid {
-  private asteroid: Graphics;
+export class Asteroid extends Sprite {
   private app: Application;
-  private speed: number;
-  private isFalling: boolean;
-  private fallDelay: number;
-  private radius: number;
+  private speed: number = 0;
+  private radius: number = 20;
+  private rotationSpeed: number = 0.01 * Math.random();
 
-  constructor(app: Application) {
+  constructor(app: Application, texture: Texture) {
+    super(texture);
     this.app = app;
-    this.radius = 20; // should be ship's width / 2 ???
-    this.asteroid = new Graphics();
-    this.asteroid.beginFill(0xff0000);
-    this.asteroid.drawCircle(0, 0, this.radius);
-    //! An asteroid's width cannot be less than that of the ship (its diameter).
+    this.radius = texture.width / 2; // should approximate ship's width / 2
+    this.anchor.set(0.5);
+    this.scale.set(0.75, 0.75)
+    this.y = -this.radius;
 
-    this.asteroid.x = limitInRange(
-      Math.random() * app.screen.width,
+    app.stage.addChild(this);
+    this.resetPosition();
+  }
+  
+
+  getBoundaries() {
+    return this.getBounds();
+  }
+
+  getPosition(): { x: number; y: number; radius: number } {
+    return { x: this.x, y: this.y, radius: this.radius };
+  }
+
+  resetPosition() {
+    this.speed = limitInRange(1 + Math.random(), 0.5, 1.5);
+    this.x = limitInRange(
+      Math.random() * this.app.screen.width,
       56 + this.radius,
-      app.screen.width - (56 + this.radius)
-    ); // 56 is 1/2 of ship's width
-    this.asteroid.y = -this.radius;
-    this.speed = 1 + Math.random();
-    this.isFalling = false;
-    this.fallDelay = Math.random() * (3000 - 200) + 200;
-
-    app.stage.addChild(this.asteroid);
-  }
-
-  private spawn(delta: number) {
-    this.fallDelay -= delta;
-    if (this.fallDelay <= 0) {
-      this.isFalling = true;
-    }
-  }
-
-  private fall(delta: number) {
-    this.asteroid.y += this.speed * delta;
-    if (this.asteroid.y > this.app.screen.height) {
-      this.app.stage.removeChild(this.asteroid);
-    }
+      this.app.screen.width - (56 + this.radius)
+    );
+    this.y = 0 - this.radius * 2;
   }
 
   update(delta: number) {
-    this.isFalling ? this.fall(delta) : this.spawn(delta);
+    this.y += this.speed * delta;
+    this.rotation += this.rotationSpeed;
+    if (this.y > this.app.screen.height) {
+      this.resetPosition();
+    }
   }
 }
 
 export class AsteroidGroup {
-  app: Application;
+  private app: Application;
   asteroids: Asteroid[];
-  quantity: number;
+  private quantity: number = 2;
+  private texture: Texture | null = null;
 
-  constructor(app: Application, quantity: number) {
+  constructor(app: Application) {
     this.app = app;
     this.asteroids = [];
-    this.quantity = quantity;
+
+    this.loadTexture();
+  }
+
+  async loadTexture() {
+    this.texture = await Assets.load("asteroid");
   }
 
   spawnAsteroid() {
-    if (this.asteroids.length < this.quantity) {
-      const asteroid = new Asteroid(this.app);
+    if (this.texture && this.asteroids.length < this.quantity) {
+      const asteroid = new Asteroid(this.app, this.texture);
       this.asteroids.push(asteroid);
     }
   }
