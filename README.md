@@ -8,4 +8,4 @@ How to run:
 3. Run `pnpm dev` to open the game at `http://localhost:5173/`
 
 The game and code design is far from perfect but it kinda works.
-![Preview image of how the game looks](https://github.com/pavsoldatov/space_shooter/assets/80415302/46fbc617-dc84-43f2-bc65-0444bd2db75a)
+![Preview image of how the game looks](https://github.com/pavsoldatov/space_shooter/assets/80415302/7106afdd-8aa7-455f-b13b-d54c6984bb71)
