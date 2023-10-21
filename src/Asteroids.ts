@@ -4,22 +4,23 @@ import { limitInRange } from "./utils.ts";
 
 export class Asteroid extends Sprite {
   private app: Application;
-  private speed: number = 0;
+  private readonly baseRotation: number = 0.01;
+  private readonly rotationMod: number = 0.02;
+  private rotationSpeed: number = 0;
   private radius: number = 20;
-  private rotationSpeed: number = 0.01 * Math.random();
+  private speed: number = 0;
 
   constructor(app: Application, texture: Texture) {
     super(texture);
     this.app = app;
     this.radius = texture.width / 2; // should approximate ship's width / 2
     this.anchor.set(0.5);
-    this.scale.set(0.75, 0.75)
+    this.scale.set(0.75, 0.75);
     this.y = -this.radius;
 
     app.stage.addChild(this);
     this.resetPosition();
   }
-  
 
   getBoundaries() {
     return this.getBounds();
@@ -37,6 +38,12 @@ export class Asteroid extends Sprite {
       this.app.screen.width - (56 + this.radius)
     );
     this.y = 0 - this.radius * 2;
+
+    this.rotationSpeed = limitInRange(
+      this.baseRotation + (Math.random() * this.rotationMod),
+      this.baseRotation,
+      this.baseRotation + this.rotationMod
+    );
   }
 
   update(delta: number) {
