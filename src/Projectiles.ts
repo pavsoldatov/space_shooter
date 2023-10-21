@@ -1,7 +1,7 @@
 import { Application, Graphics } from "pixi.js";
 
 export class Projectile extends Graphics {
-  private readonly speed: number = 5;
+  private readonly speed: number = 16;
   private readonly radius: number = 5;
   public isActive: boolean = false;
   public visible: boolean = false;
