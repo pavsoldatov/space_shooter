@@ -9,7 +9,6 @@ export class Text {
   private x: number;
   private y: number;
   private anchorQueue: [number, number][] = [];
-  private sizeQueue: [number, number][] = [];
 
   constructor(app: Application, x: number, y: number, initialText: string) {
     this.app = app;
