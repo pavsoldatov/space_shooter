@@ -25,10 +25,6 @@ export class Asteroid extends Sprite {
     return this.getBounds();
   }
 
-  getPosition(): { x: number; y: number; radius: number } {
-    return { x: this.x, y: this.y, radius: this.radius };
-  }
-
   resetPosition() {
     this.speed = limitInRange(1 + Math.random(), 0.5, 1.5);
     this.x = limitInRange(
