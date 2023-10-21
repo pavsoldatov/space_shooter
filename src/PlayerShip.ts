@@ -54,9 +54,10 @@ export class PlayerShip {
       const x = this.ship.position.x;
       const y = this.ship.position.y - this.ship.height / 2 + 20;
       if (this.canShoot) {
-        this.projectiles.add(x, y);
+        this.projectiles.fireFrom(x, y);
         this.canShoot = false;
         this.ammoCounter.decrementAmmoCount();
+
         setTimeout(() => {
           this.canShoot = true;
         }, SHOOTING_DELAY * 1000);
@@ -81,11 +82,10 @@ export class PlayerShip {
   }
 
   public update(delta: number) {
+    if (!this.ship) throw Error(`The ship is ${this.ship}`);
+
     this.boundsChecker?.update(delta, this.movements.getXSpeed());
-    this.exhaust?.update(
-      this.ship!.position.x,
-      this.movements.getPressedKey()!
-    );
-    this.projectiles.update(delta);
+    this.exhaust?.update(this.ship.position.x, this.movements.getPressedKey()!);
+    this.projectiles.update(delta, this.ship.position.x, this.ship.position.y);
   }
 }

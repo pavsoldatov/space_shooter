@@ -1,20 +1,33 @@
 import { Application, Graphics } from "pixi.js";
 
 export class Projectile extends Graphics {
-  private speed: number = 5;
-  private radius: number = 5;
+  private readonly speed: number = 5;
+  private readonly radius: number = 5;
+  public isActive: boolean = false;
+  public visible: boolean = false;
 
-  constructor(app: Application, x: number, y: number) {
+  constructor(app: Application) {
     super();
 
     this.beginFill(0xf18909);
     this.drawEllipse(0, 5, this.radius * 1, this.radius * 2);
     this.endFill();
 
+    app.stage.addChild(this);
+  }
+
+  shootFrom(x: number, y: number) {
     this.x = x;
     this.y = y;
+    this.visible = true;
+    this.isActive = true;
+  }
 
-    app.stage.addChild(this);
+  resetTo(x: number, y: number) {
+    this.visible = false;
+    this.isActive = false;
+    this.x = x;
+    this.y = y;
   }
 
   getBoundaries() {
@@ -22,7 +35,9 @@ export class Projectile extends Graphics {
   }
 
   update(delta: number) {
-    this.y -= this.speed * delta;
+    if (this.isActive) {
+      this.y -= this.speed * delta;
+    }
   }
 
   isOutsideScreen() {
@@ -38,18 +53,29 @@ export class ProjectileGroup {
     this.app = app;
   }
 
-  add(x: number, y: number) {
-    this.projectiles.push(new Projectile(this.app, x, y));
+  fireFrom(x: number, y: number) {
+    const projectile = this.getAvailableProjectile();
+    projectile.shootFrom(x, y);
   }
 
-  update(delta: number) {
-    this.projectiles = this.projectiles.filter((p) => {
-      p.update(delta);
-      if (p.isOutsideScreen()) {
-        p.destroy();
-        return false;
+  getAvailableProjectile() {
+    const available = this.projectiles.find((p) => !p.visible);
+    if (available) return available;
+
+    // If no unused projectiles, create a new one
+    const newProjectile = new Projectile(this.app);
+    this.projectiles.push(newProjectile);
+    return newProjectile;
+  }
+
+  update(delta: number, shipX: number, shipY: number) {
+    this.projectiles.forEach((p) => {
+      if (p.visible) {
+        p.update(delta);
+        if (p.isOutsideScreen()) {
+          p.resetTo(shipX, shipY);
+        }
       }
-      return true;
     });
   }
 }

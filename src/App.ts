@@ -42,7 +42,6 @@ class App {
       this.projectiles = new ProjectileGroup(this.app);
       this.playerShip = new PlayerShip(this.app, this.projectiles);
       this.collisionDetector = new CollisionDetector(
-        this.app,
         this.projectiles,
         this.asteroidGroup,
         this.hitCounter
@@ -62,7 +61,10 @@ class App {
     this.asteroidGroup?.update(delta);
     this.playerShip?.update(delta);
     this.gameTimer?.update(); // relies on Date.now() instead of delta;
-    this.collisionDetector?.checkCollisions();
+    this.collisionDetector?.checkCollisions(
+      this.playerShip?.getX()!,
+      this.playerShip?.getY()!
+    );
   }
 }
 
