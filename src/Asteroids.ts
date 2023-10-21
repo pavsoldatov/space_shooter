@@ -26,7 +26,8 @@ export class Asteroid extends Sprite {
   }
 
   resetPosition() {
-    this.speed = limitInRange(1 + Math.random(), 0.5, 1.5);
+    this.speed = limitInRange(5 * Math.random(), 1, 5);
+    console.log(this.speed)
     this.x = limitInRange(
       Math.random() * this.app.screen.width,
       56 + this.radius,

@@ -1,53 +1,41 @@
-import { Application, Assets, BitmapText } from "pixi.js";
+import { Application } from "pixi.js";
+import { Counter, Text } from "./";
 
 import { constants } from "./constants";
-
-const { FONT_NAME, FONT_SIZE } = constants.fonts;
+const { left, top } = constants.paddings;
 
 export class AmmoCounter {
   private app: Application;
-  private ammoText: BitmapText | null = null;
-  private ammoCount: number = 10;
+  private counter: Counter;
+  private ammoText: Text;
+  private readonly maxAmmo: number = 10;
 
   constructor(app: Application) {
     this.app = app;
-    this.init();
-  }
-
-  private init() {
-    Assets.load("font").then(() => {
-      this.ammoText = new BitmapText(`Ammo: ${this.ammoCount} / 10`, {
-        fontName: FONT_NAME,
-        fontSize: FONT_SIZE,
-      });
-
-      this.ammoText.anchor.set(0.0, 0);
-      this.ammoText.x = 0 + this.ammoText.textWidth / 2 - 130;
-      this.ammoText.y = this.ammoText.textHeight + 20;
-
-      this.app.stage.addChild(this.ammoText);
-    });
+    this.counter = new Counter(this.maxAmmo);
+    this.ammoText = new Text(
+      app,
+      left,
+      top * 7,
+      `Ammo: ${this.counter.getCount()} / 10`
+    );
+    this.ammoText.setAnchor(0, 0);
   }
 
   decrementAmmoCount() {
-    this.ammoCount--;
+    this.counter.decrement();
     this.updateAmmoText();
   }
 
-  getAmmoCount() {
-    return this.ammoCount;
-  }
-
   private updateAmmoText() {
-    if (this.ammoText) {
-      if (this.ammoCount < 0) {
-        this.ammoText.text = `You lose - out of ammo!`;
-        setTimeout(() => {
-          this.app.ticker.stop();
-        }, 10);
-      } else {
-        this.ammoText.text = `Ammo: ${this.ammoCount} / 10`;
-      }
+    if (this.counter.getCount() <= 0) {
+      this.ammoText.updateText(`You lose - out of ammo!`);
+      
+      setTimeout(() => {
+        this.app.ticker.stop();
+      }, 7);
+    } else {
+      this.ammoText.updateText(`Ammo: ${this.counter.getCount()} / 10`);
     }
   }
 }

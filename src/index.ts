@@ -10,6 +10,8 @@ import { HitCounter } from "./HitCounter";
 import { PlayerMovements } from "./PlayerMovements";
 import { PlayerShip } from "./PlayerShip";
 import { PressedKeyType } from "./PlayerMovements";
+import { Counter } from "./Counter";
+import { Text } from "./Text";
 
 export {
   AmmoCounter,
@@ -25,5 +27,7 @@ export {
   HitCounter,
   PlayerMovements,
   PlayerShip,
-  type PressedKeyType
+  type PressedKeyType,
+  Counter, 
+  Text
 };
