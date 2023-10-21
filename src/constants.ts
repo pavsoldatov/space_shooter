@@ -3,8 +3,12 @@ export const constants = {
     APP_WIDTH: 1280,
     APP_HEIGHT: 720,
   },
+  paddings: {
+    top: 10,
+    left: 10,    
+  },
   player: {
-    PLAYER_SPEED: 7,
+    PLAYER_SPEED: 9,
   },
   background: {
     BACKGROUND_SPEED: 0.5,
@@ -25,5 +29,8 @@ export const constants = {
   fonts: {
     FONT_NAME: "Desyrel",
     FONT_SIZE: 48,
+  },
+  winCondition: {
+    NUM_HITS: 8,
   }
 } as const;

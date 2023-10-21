@@ -1,51 +1,38 @@
-import { Application, Assets, BitmapText } from "pixi.js";
+import { Application } from "pixi.js";
+import { Counter, Text } from "./";
 
 import { constants } from "./constants";
-
-const { FONT_NAME, FONT_SIZE } = constants.fonts;
+const { NUM_HITS } = constants.winCondition;
+const { top, left } = constants.paddings;
 
 export class HitCounter {
   private app: Application;
-  private hitText: BitmapText | null = null;
-  private hitCount: number = 0;
+  private counter: Counter;
+  private hitText: Text;
+  private readonly NUM_HITS: number = NUM_HITS;
 
   constructor(app: Application) {
     this.app = app;
-    this.init();
-  }
-
-  private init() {
-    Assets.load("font").then(() => {
-      this.hitText = new BitmapText(`Hits: ${this.hitCount}`, {
-        fontName: FONT_NAME,
-        fontSize: FONT_SIZE,
-      });
-
-      this.hitText.anchor.set(0.0, 0);
-      this.hitText.x = 0 + this.hitText.textWidth / 2 - 40;
-      this.hitText.y = 10;
-
-      this.app.stage.addChild(this.hitText);
-    });
+    this.counter = new Counter(0);
+    this.hitText = new Text(app, left, top, `Hits: ${this.counter.getCount()}`);
+    this.hitText.setAnchor(0, 0);
   }
 
   incrementHitCount() {
-    this.hitCount++;
+    this.counter.increment();
     this.updateHitText();
   }
 
   getHitCount() {
-    return this.hitCount;
+    return this.counter.getCount();
   }
 
   private updateHitText() {
-    if (this.hitText) {
-      if (this.hitCount >= 8) {
-        this.hitText.text = `Hits: ${this.hitCount} You win!`;
-        this.app.ticker.stop();
-      } else {
-        this.hitText.text = `Hits: ${this.hitCount}`;
-      }
+    if (this.counter.getCount() >= this.NUM_HITS) {
+      this.hitText.updateText(`Hits: ${this.counter.getCount()} You win!`);
+      this.app.ticker.stop();
+    } else {
+      this.hitText.updateText(`Hits: ${this.counter.getCount()}`);
     }
   }
 }
