@@ -3,6 +3,7 @@ import { Application, Graphics } from "pixi.js";
 export class Projectile extends Graphics {
   private readonly speed: number = 5;
   private readonly radius: number = 5;
+  public isActive: boolean = false;
   public visible: boolean = false;
 
   constructor(app: Application) {
@@ -19,10 +20,14 @@ export class Projectile extends Graphics {
     this.x = x;
     this.y = y;
     this.visible = true;
+    this.isActive = true;
   }
 
-  reset() {
+  resetTo(x: number, y: number) {
     this.visible = false;
+    this.isActive = false;
+    this.x = x;
+    this.y = y;
   }
 
   getBoundaries() {
@@ -30,7 +35,7 @@ export class Projectile extends Graphics {
   }
 
   update(delta: number) {
-    if (this.visible) {
+    if (this.isActive) {
       this.y -= this.speed * delta;
     }
   }
@@ -63,12 +68,12 @@ export class ProjectileGroup {
     return newProjectile;
   }
 
-  update(delta: number) {
+  update(delta: number, shipX: number, shipY: number) {
     this.projectiles.forEach((p) => {
       if (p.visible) {
         p.update(delta);
         if (p.isOutsideScreen()) {
-          p.reset();
+          p.resetTo(shipX, shipY);
         }
       }
     });

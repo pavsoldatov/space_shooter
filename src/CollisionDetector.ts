@@ -1,4 +1,3 @@
-import { Application } from "pixi.js";
 import {
   ProjectileGroup,
   Asteroid,
@@ -8,31 +7,28 @@ import {
 } from "./";
 
 export class CollisionDetector {
-  private app: Application;
   private projectileGroup: ProjectileGroup;
   private asteroidGroup: AsteroidGroup;
   private hitCounter: HitCounter;
 
   constructor(
-    app: Application,
     projectiles: ProjectileGroup,
     asteroids: AsteroidGroup,
     hitCounter: HitCounter
   ) {
-    this.app = app;
     this.projectileGroup = projectiles;
     this.asteroidGroup = asteroids;
     this.hitCounter = hitCounter;
   }
 
-  checkCollisions() {
+  checkCollisions(shipX: number, shipY: number) {
     const asteroids = this.asteroidGroup.asteroids;
     const projectiles = this.projectileGroup.projectiles;
     for (const asteroid of asteroids) {
       for (const projectile of projectiles) {
-        if (this.testIsCollision(asteroid, projectile)) {
+        if (this.testIsCollision(asteroid, projectile) && projectile.isActive) {
           asteroid.resetPosition();
-          projectile.reset();
+          projectile.resetTo(shipX, shipY);
           this.hitCounter.incrementHitCount();
         }
       }
