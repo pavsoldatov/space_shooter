@@ -1,5 +1,4 @@
 import { Application, Assets, Sprite, Texture } from "pixi.js";
-
 import { limitInRange } from "./utils.ts";
 
 export class Asteroid extends Sprite {
