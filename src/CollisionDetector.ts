@@ -32,9 +32,8 @@ export class CollisionDetector {
       for (const projectile of projectiles) {
         if (this.testIsCollision(asteroid, projectile)) {
           asteroid.resetPosition();
-          projectiles.splice(projectiles.indexOf(projectile), 1);
+          projectile.reset();
           this.hitCounter.incrementHitCount();
-          this.app.stage.removeChild(projectile);
         }
       }
     }

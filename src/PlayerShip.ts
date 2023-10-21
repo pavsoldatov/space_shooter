@@ -54,7 +54,7 @@ export class PlayerShip {
       const x = this.ship.position.x;
       const y = this.ship.position.y - this.ship.height / 2 + 20;
       if (this.canShoot) {
-        this.projectiles.add(x, y);
+        this.projectiles.fireFrom(x, y);
         this.canShoot = false;
         this.ammoCounter.decrementAmmoCount();
         setTimeout(() => {
