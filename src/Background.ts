@@ -1,5 +1,4 @@
-import { Application, TilingSprite, Assets } from "pixi.js";
-
+import { Application, TilingSprite } from "pixi.js";
 import { AssetLoader, constants } from "./";
 
 const { BACKGROUND_SPEED } = constants.background;

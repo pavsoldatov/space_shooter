@@ -1,6 +1,5 @@
-import { Application, Assets, BitmapText } from "pixi.js";
-import { constants } from "./constants";
-import { AssetLoader } from ".";
+import { Application, BitmapText } from "pixi.js";
+import { AssetLoader, constants } from "./";
 
 const { FONT_NAME, FONT_SIZE } = constants.fonts;
 
