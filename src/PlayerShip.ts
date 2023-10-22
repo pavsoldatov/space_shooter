@@ -53,7 +53,7 @@ export class PlayerShip {
   private onOutOfAmmo = () => {
     this.app.renderer.render(this.app.stage);
     this.app.ticker.stop();
-  };
+  }
 
   private handleShooting(e: KeyboardEvent) {
     if (e.key === " " && this.ship) {
