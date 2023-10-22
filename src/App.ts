@@ -18,7 +18,7 @@ class App {
     this.app.view.classList.add("game_view");
     document.body.appendChild(this.app.view);
 
-    AssetLoader.getInstance().init();    
+    AssetLoader.getInstance();    
     this.levelOneScene = new LevelOneScene(this.app); // will need to switch scenes
     this.app.stage.addChild(this.levelOneScene);
   }

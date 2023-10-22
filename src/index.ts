@@ -12,6 +12,9 @@ import { PlayerShip } from "./PlayerShip";
 import { PressedKeyType } from "./PlayerMovements";
 import { Counter } from "./Counter";
 import { Text } from "./Text";
+import { AssetLoader} from "./AssetLoader";
+import { LevelOneScene } from "./LevelOneScene";
+import { constants } from "./constants";
 
 export {
   AmmoCounter,
@@ -29,5 +32,8 @@ export {
   PlayerShip,
   type PressedKeyType,
   Counter, 
-  Text
+  Text,
+  AssetLoader,
+  LevelOneScene,
+  constants
 };

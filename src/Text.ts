@@ -1,5 +1,6 @@
 import { Application, Assets, BitmapText } from "pixi.js";
 import { constants } from "./constants";
+import { AssetLoader } from ".";
 
 const { FONT_NAME, FONT_SIZE } = constants.fonts;
 
@@ -17,25 +18,58 @@ export class Text {
     this.init(initialText);
   }
 
-  private init(initialText: string) {
-    Assets.load("font").then(() => {
-      this.textElement = new BitmapText(initialText, {
-        fontName: FONT_NAME,
-        fontSize: FONT_SIZE,
-      });
+  private async init(initialText: string) {
+    await this.loadFont();
+    this.createTextElement(initialText);
+    this.setPosition();
+    this.setZindex();
+    this.addToStage();
+    this.processAnchorQueue();
+  }
 
-      this.textElement.x = this.x;
-      this.textElement.y = this.y;
-      this.app.stage.addChild(this.textElement);
+  private async loadFont() {
+    const assetLoader = AssetLoader.getInstance();
+    await assetLoader.getAsset("font");
+  }
 
-      while (this.anchorQueue.length) {
-        const anchor = this.anchorQueue.shift();
-        if (anchor) {
-          const [x, y] = anchor;
-          this.textElement.anchor.set(x, y);
-        }
-      }
+  private createTextElement(text: string) {
+    this.textElement = new BitmapText(text, {
+      fontName: FONT_NAME,
+      fontSize: FONT_SIZE,
     });
+  }
+
+  private setPosition() {
+    if (!this.textElement) {
+      console.error("Cannot set position. Missing the text element.");
+      return;
+    }
+
+    this.textElement.x = this.x;
+    this.textElement.y = this.y;
+  }
+
+  private setZindex() {
+    if (this.textElement) {
+      this.textElement.zIndex = 5 ;
+    }
+  }
+
+  private addToStage() {
+    if (this.textElement) {
+      this.app.stage.addChild(this.textElement);
+    }
+  }
+
+  private processAnchorQueue() {
+    if (!this.textElement) {
+      console.error(
+        "Cannot process the anchor queue. Missing the text element."
+      );
+      return;
+    }
+    this.anchorQueue.forEach(([x, y]) => this.textElement!.anchor.set(x, y));
+    this.anchorQueue = [];
   }
 
   setAnchor(x: number, y: number) {

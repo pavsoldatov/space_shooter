@@ -4,7 +4,7 @@ import exhaustNormal from "./exhaust/normal/spritesheet.png";
 import exhaustTurbo from "./exhaust/turbo/spritesheet.png";
 import asteroid from "./meteors/Meteor_02.png";
 
-const manifest = {
+export const manifest = {
   bundles: [
     {
       name: "level-1",
@@ -22,5 +22,3 @@ const manifest = {
     },
   ],
 };
-
-export default manifest;

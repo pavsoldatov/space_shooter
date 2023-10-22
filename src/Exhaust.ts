@@ -34,6 +34,11 @@ export class Exhaust {
     this.normalExhaustLeft = this.createExhaustAnimation(normalExhaust);
     this.normalExhaustRight = this.createExhaustAnimation(normalExhaust);
     this.turboExhaust = this.createExhaustAnimation(turboExhaust);
+
+    this.normalExhaustLeft.zIndex = 3;
+    this.normalExhaustRight.zIndex = 3;
+    this.turboExhaust.zIndex = 3;
+
     this.app.stage.addChild(
       this.normalExhaustLeft,
       this.normalExhaustRight,
