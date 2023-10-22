@@ -1,27 +1,32 @@
-import { Application, TilingSprite, Assets } from "pixi.js";
-
-import { constants } from "./constants";
+import { Application, TilingSprite } from "pixi.js";
+import { AssetLoader, constants } from "./";
 
 const { BACKGROUND_SPEED } = constants.background;
 
 export class Background {
-  private tiles: TilingSprite | null = null;
+  private tiles!: TilingSprite;
   private app: Application;
 
   constructor(app: Application) {
     this.app = app;
-
     this.init();
   }
 
   public async init() {
-    const texture = await Assets.load("background");
+    const assetLoader = AssetLoader.getInstance();
+    const texture = assetLoader.getAsset("background");
+
+    if (!texture) {
+      console.error("Background texture not loaded!");
+      return;
+    }
 
     this.tiles = new TilingSprite(
       texture,
       this.app.screen.width,
       this.app.screen.height
     );
+    this.tiles.zIndex = 0;
     this.app.stage.addChild(this.tiles);
   }
 

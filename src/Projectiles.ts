@@ -62,7 +62,6 @@ export class ProjectileGroup {
     const available = this.projectiles.find((p) => !p.visible);
     if (available) return available;
 
-    // If no unused projectiles, create a new one
     const newProjectile = new Projectile(this.app);
     this.projectiles.push(newProjectile);
     return newProjectile;

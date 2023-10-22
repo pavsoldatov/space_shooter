@@ -1,4 +1,4 @@
-import manifest from "./manifest";
+import { manifest } from "./manifest";
 import { atlas as atlasNormal } from "./exhaust/normal/atlas";
 import { atlas as atlasTurbo } from "./exhaust/turbo/atlas";
 

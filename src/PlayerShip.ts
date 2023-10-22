@@ -14,7 +14,7 @@ const { SHOOTING_DELAY } = constants.timers;
 export class PlayerShip {
   private app: Application;
   private movements: PlayerMovements = new PlayerMovements();
-  private ship: Sprite | null = null;
+  private ship!: Sprite;
   private boundsChecker: BoundsChecker | null = null;
   private exhaust: Exhaust | null = null;
   private projectiles: ProjectileGroup;
@@ -24,7 +24,7 @@ export class PlayerShip {
   constructor(app: Application, projectiles: ProjectileGroup) {
     this.app = app;
     this.projectiles = projectiles;
-    this.ammoCounter = new AmmoCounter(this.app);
+    this.ammoCounter = new AmmoCounter(this.app, this.onOutOfAmmo);
     this.init();
 
     document.addEventListener("keydown", (e) => this.handleShooting(e));
@@ -44,10 +44,16 @@ export class PlayerShip {
       APP_WIDTH / 2,
       APP_HEIGHT - this.ship.texture.width / 2
     );
+    this.ship.zIndex = 2;
     this.app.stage.addChild(this.ship);
     this.boundsChecker = new BoundsChecker(this.ship);
     this.exhaust = new Exhaust(this.app, { x: 1, y: this.ship.position.y });
   }
+
+  private onOutOfAmmo = () => {
+    this.app.renderer.render(this.app.stage);
+    this.app.ticker.stop();
+  };
 
   private handleShooting(e: KeyboardEvent) {
     if (e.key === " " && this.ship) {
@@ -68,7 +74,7 @@ export class PlayerShip {
   public getX() {
     if (!this.ship) {
       console.error(`Cannot get X. The ship is ${this.ship}`);
-      return;
+      return 0;
     }
     return this.ship.position.x;
   }
@@ -76,7 +82,7 @@ export class PlayerShip {
   public getY() {
     if (!this.ship) {
       console.error(`Cannot get Y. The ship is ${this.ship}`);
-      return;
+      return 0;
     }
     return this.ship.position.y;
   }

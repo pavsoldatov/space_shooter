@@ -17,7 +17,8 @@ export class Asteroid extends Sprite {
     this.scale.set(0.75, 0.75);
     this.y = -this.radius;
 
-    app.stage.addChild(this);
+    this.zIndex = 1;
+    this.app.stage.addChild(this);
     this.resetPosition();
   }
 

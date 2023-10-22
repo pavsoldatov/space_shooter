@@ -5,13 +5,12 @@ import { constants } from "./constants";
 const { left, top } = constants.paddings;
 
 export class AmmoCounter {
-  private app: Application;
   private counter: Counter;
   private ammoText: Text;
+  private onOutOfAmmo: () => void;
   private readonly maxAmmo: number = 10;
 
-  constructor(app: Application) {
-    this.app = app;
+  constructor(app: Application, outOfAmmoCallback: () => void) {
     this.counter = new Counter(this.maxAmmo);
     this.ammoText = new Text(
       app,
@@ -20,6 +19,7 @@ export class AmmoCounter {
       `Ammo: ${this.counter.getCount()} / 10`
     );
     this.ammoText.setAnchor(0, 0);
+    this.onOutOfAmmo = outOfAmmoCallback;
   }
 
   decrementAmmoCount() {
@@ -27,13 +27,14 @@ export class AmmoCounter {
     this.updateAmmoText();
   }
 
+  getAmmoCount() {
+    return this.counter.getCount();
+  }
+
   private updateAmmoText() {
     if (this.counter.getCount() <= 0) {
       this.ammoText.updateText(`You lose - out of ammo!`);
-      
-      setTimeout(() => {
-        this.app.ticker.stop();
-      }, 7);
+      this.onOutOfAmmo();
     } else {
       this.ammoText.updateText(`Ammo: ${this.counter.getCount()} / 10`);
     }
