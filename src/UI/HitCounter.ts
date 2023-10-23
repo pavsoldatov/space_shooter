@@ -1,20 +1,26 @@
 import { Application } from "pixi.js";
-import { Counter, Text } from "./";
+import { Counter } from "../utils";
+import { BitText } from "./";
+import { constants } from "../";
 
-import { constants } from "./constants";
 const { NUM_HITS } = constants.winCondition;
 const { top, left } = constants.paddings;
 
 export class HitCounter {
   private app: Application;
   private counter: Counter;
-  private hitText: Text;
+  private hitText: BitText;
   private readonly NUM_HITS: number = NUM_HITS;
 
   constructor(app: Application) {
     this.app = app;
     this.counter = new Counter(0);
-    this.hitText = new Text(app, left, top, `Hits: ${this.counter.getCount()}`);
+    this.hitText = new BitText(
+      app,
+      left,
+      top,
+      `Hits: ${this.counter.getCount()}`
+    );
     this.hitText.setAnchor(0, 0);
   }
 

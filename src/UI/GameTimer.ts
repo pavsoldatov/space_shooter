@@ -1,21 +1,22 @@
 import { Application } from "pixi.js";
-import { Counter, Text } from "./";
+import { Counter } from "../utils";
+import { BitText } from "./";
+import { constants } from "../";
 
-import { constants } from "./constants";
 const { GAME_TIME } = constants.timers;
 const { top, left } = constants.paddings;
 
 export class GameTimer {
   private app: Application;
   private timerCounter: Counter;
-  private timerText: Text;
+  private timerText: BitText;
   private startTime: number | null = null;
   private gameEnded: boolean = false;
 
   constructor(app: Application) {
     this.app = app;
     this.timerCounter = new Counter(GAME_TIME);
-    this.timerText = new Text(
+    this.timerText = new BitText(
       app,
       app.screen.width - left,
       top,

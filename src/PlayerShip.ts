@@ -1,12 +1,7 @@
 import { Application, Assets, Sprite, TextureSource } from "pixi.js";
-import { constants } from "./constants";
-import {
-  BoundsChecker,
-  PlayerMovements,
-  Exhaust,
-  ProjectileGroup,
-  AmmoCounter,
-} from "./";
+import { PlayerMovements, Exhaust, ProjectileGroup, constants } from "./";
+import { BoundsChecker } from "./utils";
+import { AmmoCounter } from "./UI";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 const { SHOOTING_DELAY } = constants.timers;
@@ -15,9 +10,9 @@ export class PlayerShip {
   private app: Application;
   private movements: PlayerMovements = new PlayerMovements();
   private ship!: Sprite;
-  private boundsChecker: BoundsChecker | null = null;
-  private exhaust: Exhaust | null = null;
-  private projectiles: ProjectileGroup;
+  private boundsChecker!: BoundsChecker;
+  private exhaust!: Exhaust;
+  private projectiles!: ProjectileGroup;
   private canShoot: boolean = true;
   private ammoCounter: AmmoCounter;
 
@@ -53,7 +48,7 @@ export class PlayerShip {
   private onOutOfAmmo = () => {
     this.app.renderer.render(this.app.stage);
     this.app.ticker.stop();
-  }
+  };
 
   private handleShooting(e: KeyboardEvent) {
     if (e.key === " " && this.ship) {
