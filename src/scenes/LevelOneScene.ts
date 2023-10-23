@@ -1,17 +1,16 @@
-import { Application, Container } from "pixi.js";
+import { Application } from "pixi.js";
 import {
   Background,
   PlayerShip,
   AsteroidGroup,
-  GameTimer,
-  CollisionDetector,
   ProjectileGroup,
-  HitCounter,
   AssetLoader,
-} from "./";
+} from "../";
+import { Scene, SceneManager } from "./";
+import { CollisionDetector } from "../utils";
+import { GameTimer, HitCounter } from "../UI";
 
-export class LevelOneScene extends Container {
-  private app: Application<HTMLCanvasElement>;
+export class LevelOneScene extends Scene {
   private background!: Background;
   private playerShip!: PlayerShip;
   private asteroidGroup!: AsteroidGroup;
@@ -20,20 +19,18 @@ export class LevelOneScene extends Container {
   private collisionDetector!: CollisionDetector;
   private hitCounter!: HitCounter;
   private assetLoader: AssetLoader;
+  private sceneManager: SceneManager;
 
-  constructor(app: Application<HTMLCanvasElement>) {
-    super();
-
-    this.app = app;
+  constructor(app: Application<HTMLCanvasElement>, sceneManager: SceneManager) {
+    super(app);
+    this.sceneManager = sceneManager;
     this.assetLoader = AssetLoader.getInstance();
-
-    this.init();
   }
 
-  private async init() {
+  async init() {
     try {
       this.assetLoader.loadBundle("level-1").then(() => {
-        this.background = new Background(this.app);
+        this.background = new Background(this.app, "background", true);
         this.hitCounter = new HitCounter(this.app);
         this.asteroidGroup = new AsteroidGroup(this.app);
         this.gameTimer = new GameTimer(this.app);
@@ -51,7 +48,7 @@ export class LevelOneScene extends Container {
     }
   }
 
-  private update(delta: number): void {
+  update(delta: number) {
     this.background?.update(delta);
     this.asteroidGroup?.update(delta);
     this.playerShip?.update(delta);
@@ -65,5 +62,12 @@ export class LevelOneScene extends Container {
         this.collisionDetector.checkCollisions(x, y);
       }
     }
+  }
+
+  exit() {
+    console.log("Exiting Level-1");
+    this.app.stage.removeChild(this);
+    this.removeChildren();
+    this.app.ticker.remove(this.update);
   }
 }

@@ -1,12 +1,13 @@
 import { Application } from "pixi.js";
-
 import "./style.css";
-import { AssetLoader, LevelOneScene, constants } from "./";
+import { AssetLoader, constants } from "./";
+import { MenuScene, LevelOneScene, LevelTwoScene, SceneManager } from "./scenes";
+
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 
 class App {
   private app: Application<HTMLCanvasElement>;
-  private levelOneScene: LevelOneScene;
+  private sceneManager: SceneManager = new SceneManager();
 
   constructor() {
     this.app = new Application({
@@ -18,9 +19,14 @@ class App {
     this.app.view.classList.add("game_view");
     document.body.appendChild(this.app.view);
 
-    AssetLoader.getInstance();    
-    this.levelOneScene = new LevelOneScene(this.app); // will need to switch scenes
-    this.app.stage.addChild(this.levelOneScene);
+    AssetLoader.getInstance();
+
+    this.sceneManager.registerScene("menu", new MenuScene(this.app, this.sceneManager));
+    this.sceneManager.registerScene("level-1", new LevelOneScene(this.app, this.sceneManager));
+    this.sceneManager.registerScene("level-2", new LevelTwoScene(this.app, this.sceneManager));
+    this.sceneManager.changeScene('menu')
+
+    console.log(this.sceneManager)
   }
 }
 

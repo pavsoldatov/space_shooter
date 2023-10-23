@@ -1,4 +1,4 @@
-import { constants } from "./constants";
+import { constants } from "./";
 
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
 const { PLAYER_SPEED } = constants.player;

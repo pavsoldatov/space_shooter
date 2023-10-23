@@ -4,7 +4,7 @@ import {
   AsteroidGroup,
   Projectile,
   HitCounter,
-} from "./";
+} from "../";
 
 export class CollisionDetector {
   private projectileGroup: ProjectileGroup;

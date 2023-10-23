@@ -1,9 +1,9 @@
 import { Application, BitmapText } from "pixi.js";
-import { AssetLoader, constants } from "./";
+import { AssetLoader, constants } from "../";
 
 const { FONT_NAME, FONT_SIZE } = constants.fonts;
 
-export class Text {
+export class BitText {
   private app: Application;
   private textElement: BitmapText | null = null;
   private x: number;
@@ -82,6 +82,12 @@ export class Text {
   updateText(newText: string) {
     if (this.textElement) {
       this.textElement.text = newText;
+    }
+  }
+
+  destroy() {
+    if (this.textElement) {
+      this.app.stage.removeChild(this.textElement);
     }
   }
 }

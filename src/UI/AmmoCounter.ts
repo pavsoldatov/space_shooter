@@ -1,18 +1,19 @@
 import { Application } from "pixi.js";
-import { Counter, Text } from "./";
+import { Counter } from "../utils";
+import { BitText } from "./";
+import { constants } from "../";
 
-import { constants } from "./constants";
 const { left, top } = constants.paddings;
 
 export class AmmoCounter {
   private counter: Counter;
-  private ammoText: Text;
+  private ammoText: BitText;
   private onOutOfAmmo: () => void;
   private readonly maxAmmo: number = 10;
 
   constructor(app: Application, outOfAmmoCallback: () => void) {
     this.counter = new Counter(this.maxAmmo);
-    this.ammoText = new Text(
+    this.ammoText = new BitText(
       app,
       left,
       top * 7,

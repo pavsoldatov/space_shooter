@@ -1,8 +1,6 @@
 import { AnimatedSprite, Application, Spritesheet, BaseTexture } from "pixi.js";
-
-import { constants } from "./constants";
 import { atlasNormal, atlasTurbo } from "./assets";
-import { PressedKeyType } from "./";
+import { PressedKeyType, constants } from "./";
 
 const { ARROW_LEFT, ARROW_RIGHT } = constants.keyboardKeys;
 const { EXHAUST_SPEED } = constants.animation.exhaust;
@@ -12,15 +10,15 @@ type ExhaustAtlas = typeof atlasNormal | typeof atlasTurbo;
 
 export class Exhaust {
   private app: Application;
-  private normalExhaustRight: AnimatedSprite | null = null;
-  private normalExhaustLeft: AnimatedSprite | null = null;
-  private turboExhaust: AnimatedSprite | null = null;
+  private normalExhaustRight!: AnimatedSprite;
+  private normalExhaustLeft!: AnimatedSprite;
+  private turboExhaust!: AnimatedSprite;
 
-  private position: Position | null = null;
+  private position: Position;
   private readonly offsetY = 48;
   private readonly offsetX = 25.6;
 
-  constructor(app: Application, position: Position | null) {
+  constructor(app: Application, position: Position) {
     this.app = app;
     this.position = position;
 
@@ -44,8 +42,6 @@ export class Exhaust {
       this.normalExhaustRight,
       this.turboExhaust
     );
-
-    // TODO?: change this.app to new Container (== PlayerShip) and position accordingly
   }
 
   private async loadExhaustTexture(atlas: ExhaustAtlas) {
@@ -96,13 +92,13 @@ export class Exhaust {
     switch (pressedKey) {
       case ARROW_LEFT:
         this.toggleVisibility(true, false, true);
-        this.normalExhaustRight.x = x + this.offsetX;
-        this.turboExhaust.x = x - this.offsetX;
+        this.normalExhaustRight.x = x - this.offsetX;
+        this.turboExhaust.x = x + this.offsetX;
         break;
       case ARROW_RIGHT:
         this.toggleVisibility(true, true, false);
-        this.turboExhaust.x = x + this.offsetX;
-        this.normalExhaustLeft.x = x - this.offsetX;
+        this.turboExhaust.x = x - this.offsetX;
+        this.normalExhaustLeft.x = x + this.offsetX;
         break;
       default:
         this.toggleVisibility(false, true, true);
