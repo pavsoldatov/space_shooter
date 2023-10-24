@@ -106,4 +106,12 @@ export class Exhaust {
         this.normalExhaustLeft.x = x - this.offsetX;
     }
   }
+
+  remove() {
+    this.app.stage.removeChild(
+      this.normalExhaustLeft,
+      this.normalExhaustRight,
+      this.turboExhaust
+    );
+  }
 }

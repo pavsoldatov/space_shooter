@@ -21,10 +21,10 @@ class App {
 
     AssetLoader.getInstance();
 
-    this.sceneManager.registerScene("menu", new MenuScene(this.app, this.sceneManager));
-    this.sceneManager.registerScene("level-1", new LevelOneScene(this.app, this.sceneManager));
-    this.sceneManager.registerScene("level-2", new LevelTwoScene(this.app, this.sceneManager));
-    this.sceneManager.changeScene('menu')
+    this.sceneManager.register("menu", new MenuScene(this.app, this.sceneManager));
+    this.sceneManager.register("level-1", new LevelOneScene(this.app, this.sceneManager));
+    this.sceneManager.register("level-2", new LevelTwoScene(this.app));
+    this.sceneManager.changeTo('menu')
 
     console.log(this.sceneManager)
   }

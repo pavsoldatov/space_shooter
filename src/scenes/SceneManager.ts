@@ -4,13 +4,43 @@ export class SceneManager {
   private scenes: Map<string, Scene> = new Map();
   private currentScene!: Scene;
 
-  constructor() {}
+  constructor() {
+    console.log(this);
+  }
 
-  registerScene(name: string, scene: Scene) {
+  register(name: string, scene: Scene) {
     this.scenes.set(name, scene);
   }
 
-  changeScene(name: string) {
+  goNext() {
+    if (!this.currentScene) {
+      console.error("Cannot go next scene - no current scene.");
+    }
+
+    let foundCurrent = false;
+    let nextSceneName: string | null = null;
+
+    for (let [name, scene] of this.scenes) {
+      if (foundCurrent) {
+        nextSceneName = name;
+        break;
+      }
+      if (scene === this.currentScene) {
+        foundCurrent = true;
+      }
+    }
+
+    if (!nextSceneName) {
+      console.error(
+        "Current scene is the last scene. No next scene to move to."
+      );
+      return;
+    }
+
+    this.changeTo(nextSceneName);
+  }
+
+  changeTo(name: string) {
     if (this.currentScene) {
       this.currentScene.exit();
     }
@@ -18,7 +48,6 @@ export class SceneManager {
     if (newScene) {
       newScene.init();
       this.currentScene = newScene;
-      // newScene.app.stage.addChild(newScene);
     } else {
       console.error(`Scene ${name} not found!`);
     }

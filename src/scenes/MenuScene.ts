@@ -17,8 +17,6 @@ export class MenuScene extends Scene {
     this.app = app;
     this.sceneManager = sceneManager;
     this.assetLoader = AssetLoader.getInstance();
-    this.sortableChildren = true;
-    this.app.stage.sortableChildren = true;
   }
 
   async init() {
@@ -66,17 +64,14 @@ export class MenuScene extends Scene {
 
   private onGameStart = () => {
     console.log("Game Start Button Clicked");
-    this.sceneManager.changeScene("level-1");
+    this.sceneManager.changeTo("level-1");
     this.exit();
   };
 
   exit(): void {
     console.log("Exiting MenuScene");
-    this.startButton.destroy();
-    this.heroText.destroy();
-    this.removeChildren();
-    this.app.stage.removeChild(this);
-    this.app.ticker.remove(this.update);
+    this.startButton.remove();
+    this.heroText.remove();
   }
 
   update() {}

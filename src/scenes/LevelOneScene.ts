@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, TickerCallback } from "pixi.js";
 import {
   Background,
   PlayerShip,
@@ -41,10 +41,19 @@ export class LevelOneScene extends Scene {
           this.asteroidGroup,
           this.hitCounter
         );
+        this.app.ticker.add(this.update, this);
       });
-      this.app.ticker.add((delta) => this.update(delta));
     } catch (error) {
       console.error("Failed to initialize LevelOneScene:", error);
+    }
+  }
+
+  private checkHits(hits: number) {
+    if (hits >= 2) {
+      console.log(hits);
+      this.exit();
+      this.sceneManager.changeTo("level-2");
+      this.hitCounter.resetHitCount();
     }
   }
 
@@ -62,12 +71,14 @@ export class LevelOneScene extends Scene {
         this.collisionDetector.checkCollisions(x, y);
       }
     }
+
+    this.checkHits(this.hitCounter.getHitCount());
   }
 
   exit() {
     console.log("Exiting Level-1");
-    this.app.stage.removeChild(this);
-    this.removeChildren();
-    this.app.ticker.remove(this.update);
+    this.app.ticker.remove(this.update, this);
+    this.background.remove();
+    this.playerShip.remove();
   }
 }

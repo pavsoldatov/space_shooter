@@ -50,7 +50,7 @@ export class BitText {
 
   private setZindex() {
     if (this.textElement) {
-      this.textElement.zIndex = 5 ;
+      this.textElement.zIndex = 5;
     }
   }
 
@@ -85,7 +85,7 @@ export class BitText {
     }
   }
 
-  destroy() {
+  remove() {
     if (this.textElement) {
       this.app.stage.removeChild(this.textElement);
     }

@@ -34,17 +34,23 @@ export class Background {
     this.app.stage.addChild(this.tiles);
   }
 
-  public setGameStarted(gameStarted: boolean) {
+  setGameStarted(gameStarted: boolean) {
     this.gameStarted = gameStarted;
   }
 
-  public get sprite(): TilingSprite {
+  get sprite(): TilingSprite {
     return this.tiles;
   }
 
-  public update(delta: number) {
+  update(delta: number) {
     if (this.tiles && this.gameStarted) {
       this.tiles.tilePosition.y += BACKGROUND_SPEED * delta;
+    }
+  }
+
+  remove() {
+    if (this.tiles) {
+      this.app.stage.removeChild(this.tiles);
     }
   }
 }

@@ -89,4 +89,9 @@ export class PlayerShip {
     this.exhaust?.update(this.ship.position.x, this.movements.getPressedKey()!);
     this.projectiles.update(delta, this.ship.position.x, this.ship.position.y);
   }
+
+  public remove() {
+    this.app.stage.removeChild(this.ship);
+    this.exhaust.remove();
+  }
 }

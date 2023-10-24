@@ -7,13 +7,11 @@ const { NUM_HITS } = constants.winCondition;
 const { top, left } = constants.paddings;
 
 export class HitCounter {
-  private app: Application;
   private counter: Counter;
   private hitText: BitText;
   private readonly NUM_HITS: number = NUM_HITS;
 
   constructor(app: Application) {
-    this.app = app;
     this.counter = new Counter(0);
     this.hitText = new BitText(
       app,
@@ -33,10 +31,13 @@ export class HitCounter {
     return this.counter.getCount();
   }
 
+  resetHitCount() {
+    this.counter.setCount(0);
+  }
+
   private updateHitText() {
     if (this.counter.getCount() >= this.NUM_HITS) {
       this.hitText.updateText(`Hits: ${this.counter.getCount()} You win!`);
-      this.app.ticker.stop();
     } else {
       this.hitText.updateText(`Hits: ${this.counter.getCount()}`);
     }
