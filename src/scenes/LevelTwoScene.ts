@@ -1,13 +1,7 @@
 import { Application } from "pixi.js";
-import {
-  Background,
-  AssetLoader,
-  PlayerShip,
-  HitCounter,
-  ProjectileGroup,
-} from "../";
+import { Background, AssetLoader, PlayerShip, SharedPlayerShip, ProjectileGroup } from "../";
 import { Scene } from "./";
-import { GameTimer } from "../UI";
+import { GameTimer, HitCounter, SharedHitCounter, SharedGameTimer } from "../UI";
 import { CollisionDetector } from "../utils";
 
 export class LevelTwoScene extends Scene {
@@ -36,21 +30,27 @@ export class LevelTwoScene extends Scene {
     }
   }
 
+  private checkHits(hits: number) {
+    if (hits >= 2) {
+      console.log("You win");
+      this.app.stop();
+    }
+  }
+
   private async loadAssets() {
     await this.assetLoader.loadBundle("level-2");
   }
 
   private setupComponents() {
     this.background = new Background(this.app, "background2", true);
-    this.hitCounter = new HitCounter(this.app);
-    this.gameTimer = new GameTimer(this.app);
-    this.projectiles = new ProjectileGroup(this.app);
-    this.playerShip = new PlayerShip(this.app, this.projectiles);
-    this.collisionDetector = new CollisionDetector(
-      this.projectiles,
-      this.boss,
-      this.hitCounter
-    );
+    this.hitCounter = SharedHitCounter.getSharedInstance();
+    this.gameTimer = SharedGameTimer.getSharedInstance();
+    this.playerShip = SharedPlayerShip.getSharedInstance();
+    // this.collisionDetector = new CollisionDetector(
+    //   this.projectiles,
+    //   this.boss,
+    //   this.hitCounter
+    // );
     this.app.ticker.add(this.update, this);
   }
 
@@ -60,8 +60,8 @@ export class LevelTwoScene extends Scene {
   }
 
   update(delta: number) {
-    if (this.background) {
-      this.background.update(delta);
-    }
+    this.background.update(delta);
+    this.playerShip.update(delta);
+    this.gameTimer.update(); // relies on Date.now() instead of delta;
   }
 }

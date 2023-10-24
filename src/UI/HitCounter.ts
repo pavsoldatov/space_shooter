@@ -1,6 +1,6 @@
 import { Application } from "pixi.js";
-import { Counter } from "../utils";
-import { BitText } from "./";
+import { Counter, ShareableMixin } from "../utils";
+import { BitText } from "../UI";
 import { constants } from "../";
 
 const { NUM_HITS } = constants.winCondition;
@@ -43,3 +43,5 @@ export class HitCounter {
     }
   }
 }
+
+export const SharedHitCounter = ShareableMixin(HitCounter, "HitCounter");

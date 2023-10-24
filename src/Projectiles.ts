@@ -1,4 +1,5 @@
 import { Application, Graphics } from "pixi.js";
+import { ShareableMixin } from "./utils";
 
 export class Projectile extends Graphics {
   private readonly speed: number = 16;
@@ -12,6 +13,7 @@ export class Projectile extends Graphics {
     this.beginFill(0xf18909);
     this.drawEllipse(0, 5, this.radius * 1, this.radius * 2);
     this.endFill();
+    this.zIndex = 1;
 
     app.stage.addChild(this);
   }
@@ -78,3 +80,5 @@ export class ProjectileGroup {
     });
   }
 }
+
+export const SharedProjectileGroup = ShareableMixin(ProjectileGroup, "ProjectileGroup");

@@ -1,10 +1,5 @@
-import {
-  ProjectileGroup,
-  Asteroid,
-  AsteroidGroup,
-  Projectile,
-  HitCounter,
-} from "../";
+import { ProjectileGroup, Asteroid, AsteroidGroup, Projectile } from "../";
+import { HitCounter } from "../UI";
 
 export class CollisionDetector {
   private projectileGroup: ProjectileGroup;

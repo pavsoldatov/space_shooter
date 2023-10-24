@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import { Counter } from "../utils";
+import { Counter, ShareableMixin } from "../utils";
 import { BitText } from "./";
 import { constants } from "../";
 
@@ -61,3 +61,5 @@ export class GameTimer {
     }
   }
 }
+
+export const SharedGameTimer = ShareableMixin(GameTimer, "GameTimer");

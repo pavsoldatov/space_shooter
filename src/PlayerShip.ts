@@ -1,20 +1,21 @@
 import { Application, Assets, Sprite, TextureSource } from "pixi.js";
 import { PlayerMovements, Exhaust, ProjectileGroup, constants } from "./";
-import { BoundsChecker } from "./utils";
+import { BoundsChecker, ShareableMixin } from "./utils";
 import { AmmoCounter } from "./UI";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 const { SHOOTING_DELAY } = constants.timers;
 
 export class PlayerShip {
-  private app: Application;
+  private app!: Application;
   private movements: PlayerMovements = new PlayerMovements();
+  // private movements: PlayerMovements = new SharedPlayerMovements();
   private ship!: Sprite;
   private boundsChecker!: BoundsChecker;
   private exhaust!: Exhaust;
   private projectiles!: ProjectileGroup;
   private canShoot: boolean = true;
-  private ammoCounter: AmmoCounter;
+  private ammoCounter!: AmmoCounter;
 
   constructor(app: Application, projectiles: ProjectileGroup) {
     this.app = app;
@@ -95,3 +96,5 @@ export class PlayerShip {
     this.exhaust.remove();
   }
 }
+
+export const SharedPlayerShip = ShareableMixin(PlayerShip, "PlayerShip");
