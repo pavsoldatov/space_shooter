@@ -36,7 +36,7 @@ export class Asteroid extends Sprite {
     this.y = 0 - this.radius * 2;
 
     this.rotationSpeed = limitInRange(
-      this.baseRotation + (Math.random() * this.rotationMod),
+      this.baseRotation + Math.random() * this.rotationMod,
       this.baseRotation,
       this.baseRotation + this.rotationMod
     );
@@ -48,6 +48,11 @@ export class Asteroid extends Sprite {
     if (this.y > this.app.screen.height) {
       this.resetPosition();
     }
+  }
+
+  remove() {
+    this.app.stage.removeChild(this);
+    super.destroy();
   }
 }
 
@@ -80,5 +85,12 @@ export class AsteroidGroup {
     for (const asteroid of this.asteroids) {
       asteroid.update(delta);
     }
+  }
+  remove() {
+    for (const asteroid of this.asteroids) {
+      this.app.stage.removeChild(asteroid)
+      asteroid.destroy();
+    }
+    this.asteroids = [];
   }
 }
