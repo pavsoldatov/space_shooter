@@ -28,8 +28,8 @@ export class Boss {
     this.sprite.endFill();
 
     this.sprite.x = this.app.view.width / 2;
-    this.sprite.y = this.radius * 2;
-    this.sprite.zIndex = 1;
+    this.sprite.y = this.radius * 3;
+    this.sprite.zIndex = 2;
 
     this.app.stage.addChild(this.sprite);
   }
@@ -44,7 +44,7 @@ export class Boss {
   }
   
   private initBehavior() {
-    this.behavior = new BossBehavior(this.sprite);
+    this.behavior = new BossBehavior(this.app, this.sprite, true);
   }
 
   public takeDamage(amount: number) {
@@ -84,7 +84,7 @@ export class Boss {
   }
 
   update(delta: number) {
-    this.behavior.update(delta);
+    // this.behavior.update(delta);
     this.healthBar.update(this.sprite.x)
   }
 }
