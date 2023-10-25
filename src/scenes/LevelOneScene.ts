@@ -1,11 +1,20 @@
 import { Application } from "pixi.js";
 import {
-  Background, PlayerShip, SharedPlayerShip,
-  AsteroidGroup, ProjectileGroup, AssetLoader,
+  Background,
+  PlayerShip,
+  SharedPlayerShip,
+  AsteroidGroup,
+  ProjectileGroup,
+  AssetLoader,
 } from "../";
 import { Scene, SceneManager } from "./";
 import { CollisionDetector } from "../utils";
-import { GameTimer, SharedGameTimer, HitCounter, SharedHitCounter } from "../UI";
+import {
+  GameTimer,
+  SharedGameTimer,
+  HitCounter,
+  SharedHitCounter,
+} from "../UI";
 
 export class LevelOneScene extends Scene {
   private background!: Background;
@@ -46,11 +55,11 @@ export class LevelOneScene extends Scene {
   }
 
   private checkHits(hits: number) {
-    if (hits >= 2) {
+    if (hits >= 0) {
       console.log(hits);
       this.exit();
+      console.log(this.hitCounter.getHitCount());
       this.sceneManager.changeTo("level-2");
-      this.hitCounter.resetHitCount();
     }
   }
 
@@ -85,9 +94,13 @@ export class LevelOneScene extends Scene {
         }
       }
     }
+    this.gameTimer.resetTimer();
+    this.playerShip.resetAmmoCount();
+    this.app.render();
 
     this.app.ticker.remove(this.update, this);
     this.background.remove();
     this.asteroidGroup.remove();
+    this.hitCounter.remove();
   }
 }

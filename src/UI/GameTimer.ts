@@ -4,13 +4,13 @@ import { BitText } from "./";
 import { constants } from "../";
 
 const { GAME_TIME } = constants.timers;
-const { top, left } = constants.paddings;
+const { paddings } = constants;
 
 export class GameTimer {
   private app: Application;
   private timerCounter: Counter;
   private timerText: BitText;
-  private startTime: number | null = null;
+  private startTime!: number;
   private gameEnded: boolean = false;
 
   constructor(app: Application) {
@@ -18,12 +18,24 @@ export class GameTimer {
     this.timerCounter = new Counter(GAME_TIME);
     this.timerText = new BitText(
       app,
-      app.screen.width - left,
-      top,
+      app.screen.width - paddings.left,
+      paddings.top,
       this.formatTimeText(this.timerCounter.getCount())
     );
     this.startTime = Date.now();
     this.timerText.setAnchor(1, 0);
+  }
+
+  resetTimer() {
+    this.timerCounter.setCount(GAME_TIME);
+    this.startTime = Date.now();
+    this.updateGameStatus(this.getElapsedTime());
+  }
+
+  update() {
+    if (!this.gameEnded) {
+      this.updateGameStatus(this.getElapsedTime());
+    }
   }
 
   private formatTimeText(time: number) {
@@ -39,7 +51,7 @@ export class GameTimer {
     if (elapsedTime >= this.timerCounter.getCount()) {
       this.endGame();
     } else {
-      this.updateRemainingTimeDisplay(
+      this.updateRemainingTimeText(
         this.timerCounter.getCount() - Math.floor(elapsedTime)
       );
     }
@@ -51,15 +63,11 @@ export class GameTimer {
     this.app.ticker.stop();
   }
 
-  private updateRemainingTimeDisplay(remainingTime: number) {
+  private updateRemainingTimeText(remainingTime: number) {
     this.timerText.updateText(this.formatTimeText(remainingTime));
   }
 
-  update() {
-    if (!this.gameEnded) {
-      this.updateGameStatus(this.getElapsedTime());
-    }
-  }
+
 }
 
 export const SharedGameTimer = ShareableMixin(GameTimer, "GameTimer");

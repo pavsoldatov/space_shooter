@@ -1,7 +1,7 @@
 import { Application } from "pixi.js";
-import { Background, AssetLoader, PlayerShip, SharedPlayerShip, ProjectileGroup } from "../";
+import { Background, AssetLoader, PlayerShip, SharedPlayerShip, ProjectileGroup, Boss } from "../";
 import { Scene } from "./";
-import { GameTimer, HitCounter, SharedHitCounter, SharedGameTimer } from "../UI";
+import { GameTimer, HitCounter, SharedGameTimer } from "../UI";
 import { CollisionDetector } from "../utils";
 
 export class LevelTwoScene extends Scene {
@@ -12,7 +12,7 @@ export class LevelTwoScene extends Scene {
   private gameTimer!: GameTimer;
   private projectiles!: ProjectileGroup;
   private collisionDetector!: CollisionDetector;
-  private boss: any;
+  private boss!: Boss;
 
   constructor(app: Application<HTMLCanvasElement>) {
     super(app);
@@ -30,12 +30,12 @@ export class LevelTwoScene extends Scene {
     }
   }
 
-  private checkHits(hits: number) {
-    if (hits >= 2) {
-      console.log("You win");
-      this.app.stop();
-    }
-  }
+  // private checkHits(hits: number) {
+  //   if (hits >= 2) {
+  //     console.log("You win");
+  //     this.app.stop();
+  //   }
+  // }
 
   private async loadAssets() {
     await this.assetLoader.loadBundle("level-2");
@@ -43,7 +43,7 @@ export class LevelTwoScene extends Scene {
 
   private setupComponents() {
     this.background = new Background(this.app, "background2", true);
-    this.hitCounter = SharedHitCounter.getSharedInstance();
+    this.boss = new Boss(this.app);
     this.gameTimer = SharedGameTimer.getSharedInstance();
     this.playerShip = SharedPlayerShip.getSharedInstance();
     // this.collisionDetector = new CollisionDetector(
@@ -63,5 +63,6 @@ export class LevelTwoScene extends Scene {
     this.background.update(delta);
     this.playerShip.update(delta);
     this.gameTimer.update(); // relies on Date.now() instead of delta;
+    this.boss.update(delta);
   }
 }

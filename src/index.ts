@@ -6,6 +6,9 @@ import { Exhaust } from "./Exhaust";
 import { PlayerMovements, PressedKeyType } from "./PlayerMovements";
 import { PlayerShip, SharedPlayerShip } from "./PlayerShip";
 import { AssetLoader } from "./AssetLoader";
+import { Boss } from "./Boss";
+import { HealthBar } from "./HealthBar";
+import { BossBehavior } from "./BossBehavior";
 
 export {
   constants,
@@ -20,4 +23,7 @@ export {
   SharedPlayerShip,
   type PressedKeyType,
   AssetLoader,
+  Boss,
+  HealthBar,
+  BossBehavior,
 };

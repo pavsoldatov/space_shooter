@@ -83,6 +83,10 @@ export class PlayerShip {
     return this.ship.position.y;
   }
 
+  public resetAmmoCount() {
+    this.ammoCounter.resetAmmoCount();
+  }
+
   public update(delta: number) {
     if (!this.ship) throw Error(`The ship is ${this.ship}`);
 
