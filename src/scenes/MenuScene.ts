@@ -1,5 +1,5 @@
 import { Application } from "pixi.js";
-import { Background, AssetLoader, constants } from "../";
+import { AssetLoader, Background, constants } from "../";
 import { StartButton, BitText } from "../UI";
 import { Scene, SceneManager } from "../scenes";
 
@@ -14,7 +14,6 @@ export class MenuScene extends Scene {
 
   constructor(app: Application<HTMLCanvasElement>, sceneManager: SceneManager) {
     super(app);
-    this.app = app;
     this.sceneManager = sceneManager;
     this.assetLoader = AssetLoader.getInstance();
   }
@@ -35,6 +34,7 @@ export class MenuScene extends Scene {
 
   private setupComponents() {
     this.background = new Background(this.app, "background");
+    this.background.setGameStarted(false);
     this.heroText = this.createHeroText();
     this.startButton = this.createStartButton();
   }

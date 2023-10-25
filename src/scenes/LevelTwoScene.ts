@@ -4,12 +4,11 @@ import {
   AssetLoader,
   PlayerShip,
   SharedPlayerShip,
-  ProjectileGroup,
   Boss,
   constants,
 } from "../";
 import { Scene } from "../scenes";
-import { BitText, GameTimer, HitCounter, SharedGameTimer } from "../UI";
+import { BitText, GameTimer, SharedGameTimer } from "../UI";
 import { CollisionDetector2 } from "../utils";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
@@ -17,10 +16,8 @@ const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 export class LevelTwoScene extends Scene {
   private assetLoader: AssetLoader;
   private background!: Background;
-  private hitCounter!: HitCounter;
   private playerShip!: PlayerShip;
   private gameTimer!: GameTimer;
-  private projectiles!: ProjectileGroup;
   private collisionDetector!: CollisionDetector2;
   private boss!: Boss;
 
@@ -103,7 +100,7 @@ export class LevelTwoScene extends Scene {
     this.background.update(delta);
     this.playerShip.update(delta);
     this.gameTimer.update(); // relies on Date.now() instead of delta;
-    this.boss.update(delta);
+    this.boss.update();
 
     this.collisionDetector.checkProjectileCollisions(
       this.boss,

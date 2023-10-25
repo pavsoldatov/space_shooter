@@ -1,4 +1,4 @@
-import { Application, Assets, Sprite, TextureSource } from "pixi.js";
+import { Application, Sprite } from "pixi.js";
 import {
   PlayerMovements,
   Exhaust,

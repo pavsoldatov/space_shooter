@@ -1,10 +1,9 @@
-import { Application, Graphics, Sprite, Ticker } from "pixi.js";
-import { Projectile, ProjectileGroup, constants } from "./";
+import { Application, Sprite, Ticker } from "pixi.js";
+import { ProjectileGroup, constants } from "./";
 
 const { APP_WIDTH } = constants.resolution;
 
 export class BossBehavior {
-  private app: Application;
   private sprite: Sprite;
   private movingLeft: boolean = false;
   private speed: number = 1.5;
@@ -15,7 +14,6 @@ export class BossBehavior {
   private gameOver: boolean = false;
 
   constructor(app: Application, sprite: Sprite, autoMove: boolean = false) {
-    this.app = app;
     this.sprite = sprite;
     this.projectileGroup = new ProjectileGroup(app, "down");
     this.ticker = new Ticker();

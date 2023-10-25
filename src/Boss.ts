@@ -94,7 +94,7 @@ export class Boss {
     return this.sprite.position.y;
   }
 
-  update(delta: number) {
+  update() {
     if (!this.healthBar) return;
     if (this.healthBar.health === 0) {
       const winEvent = new CustomEvent("bossDefeated");
