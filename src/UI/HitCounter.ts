@@ -1,24 +1,21 @@
 import { Application } from "pixi.js";
-import { Counter } from "../utils";
-import { BitText } from "./";
+import { Counter, ShareableMixin } from "../utils";
+import { BitText } from "../UI";
 import { constants } from "../";
 
 const { NUM_HITS } = constants.winCondition;
-const { top, left } = constants.paddings;
+const { paddings } = constants;
 
 export class HitCounter {
-  private app: Application;
   private counter: Counter;
   private hitText: BitText;
-  private readonly NUM_HITS: number = NUM_HITS;
 
   constructor(app: Application) {
-    this.app = app;
     this.counter = new Counter(0);
     this.hitText = new BitText(
       app,
-      left,
-      top,
+      paddings.left,
+      paddings.top * 7,
       `Hits: ${this.counter.getCount()}`
     );
     this.hitText.setAnchor(0, 0);
@@ -33,12 +30,22 @@ export class HitCounter {
     return this.counter.getCount();
   }
 
+  resetHitCount() {
+    this.counter.setCount(0);
+    this.updateHitText();
+  }
+
+  remove() {
+    this.hitText.remove();
+  }
+
   private updateHitText() {
-    if (this.counter.getCount() >= this.NUM_HITS) {
+    if (this.counter.getCount() >= NUM_HITS) {
       this.hitText.updateText(`Hits: ${this.counter.getCount()} You win!`);
-      this.app.ticker.stop();
     } else {
       this.hitText.updateText(`Hits: ${this.counter.getCount()}`);
     }
   }
 }
+
+export const SharedHitCounter = ShareableMixin(HitCounter, "HitCounter");

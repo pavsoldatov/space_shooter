@@ -1,25 +1,29 @@
+import { constants } from "./constants";
 import { Asteroid, AsteroidGroup } from "./Asteroids";
 import { Projectile, ProjectileGroup } from "./Projectiles";
 import { Background } from "./Background";
 import { Exhaust } from "./Exhaust";
-import { HitCounter } from "./UI/HitCounter";
-import { PlayerMovements } from "./PlayerMovements";
-import { PlayerShip } from "./PlayerShip";
-import { PressedKeyType } from "./PlayerMovements";
+import { PlayerMovements, PressedKeyType } from "./PlayerMovements";
+import { PlayerShip, SharedPlayerShip } from "./PlayerShip";
 import { AssetLoader } from "./AssetLoader";
-import { constants } from "./constants";
+import { Boss } from "./Boss";
+import { HealthBar } from "./HealthBar";
+import { BossBehavior } from "./BossBehavior";
 
 export {
+  constants,
   Asteroid,
   AsteroidGroup,
   Projectile,
   ProjectileGroup,
   Background,
   Exhaust,
-  HitCounter,
   PlayerMovements,
   PlayerShip,
+  SharedPlayerShip,
   type PressedKeyType,
   AssetLoader,
-  constants,
+  Boss,
+  HealthBar,
+  BossBehavior,
 };

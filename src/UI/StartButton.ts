@@ -5,16 +5,16 @@ export class StartButton {
 
   constructor(private app: Application, label: string, x: number, y: number) {
     this.button = new Graphics();
-    this.button.beginFill(0xFF06B5);
+    this.button.beginFill(0xff06b5);
     this.button.drawRect(0, 0, 200, 50);
     this.button.endFill();
     this.button.x = x;
     this.button.y = y;
     this.button.eventMode = "static";
-    this.button.cursor = 'pointer';
+    this.button.cursor = "pointer";
 
-    const buttonText = new Text(label, { fill: 'white' });
-    buttonText.x = (this.button.width - buttonText.width) / 2; // Center text
+    const buttonText = new Text(label, { fill: "white" });
+    buttonText.x = (this.button.width - buttonText.width) / 2;
     buttonText.y = (this.button.height - buttonText.height) / 2;
 
     this.button.addChild(buttonText);
@@ -29,12 +29,11 @@ export class StartButton {
     return this.button.zIndex;
   }
 
-  public destroy() {
+  public remove() {
     this.button.removeAllListeners();
     this.app.stage.removeChild(this.button);
   }
 
-  // For event handling
   public on(event: string, fn: () => void) {
     this.button.on(event, fn);
   }

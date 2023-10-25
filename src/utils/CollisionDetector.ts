@@ -1,10 +1,5 @@
-import {
-  ProjectileGroup,
-  Asteroid,
-  AsteroidGroup,
-  Projectile,
-  HitCounter,
-} from "../";
+import { ProjectileGroup, Asteroid, AsteroidGroup, Projectile } from "../";
+import { HitCounter } from "../UI";
 
 export class CollisionDetector {
   private projectileGroup: ProjectileGroup;
@@ -21,7 +16,7 @@ export class CollisionDetector {
     this.hitCounter = hitCounter;
   }
 
-  checkCollisions(shipX: number, shipY: number) {
+  checkPlayerCollisions(shipX: number, shipY: number) {
     const asteroids = this.asteroidGroup.asteroids;
     const projectiles = this.projectileGroup.projectiles;
     for (const asteroid of asteroids) {

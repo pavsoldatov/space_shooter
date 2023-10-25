@@ -10,6 +10,9 @@ export const constants = {
   player: {
     PLAYER_SPEED: 9,
   },
+  boss: {
+    MAX_HEALTH: 4,
+  },
   background: {
     BACKGROUND_SPEED: 0.5,
   },
@@ -32,5 +35,8 @@ export const constants = {
   },
   winCondition: {
     NUM_HITS: 8,
+  },
+  looseCondition: {
+    NUM_AMMO: 10,
   }
 } as const;

@@ -1,20 +1,26 @@
-import { Application, Assets, Sprite, TextureSource } from "pixi.js";
-import { PlayerMovements, Exhaust, ProjectileGroup, constants } from "./";
-import { BoundsChecker } from "./utils";
+import { Application, Sprite } from "pixi.js";
+import {
+  PlayerMovements,
+  Exhaust,
+  ProjectileGroup,
+  constants,
+  AssetLoader,
+} from "./";
+import { BoundsChecker, ShareableMixin } from "./utils";
 import { AmmoCounter } from "./UI";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 const { SHOOTING_DELAY } = constants.timers;
 
 export class PlayerShip {
-  private app: Application;
+  private app!: Application;
   private movements: PlayerMovements = new PlayerMovements();
   private ship!: Sprite;
   private boundsChecker!: BoundsChecker;
   private exhaust!: Exhaust;
   private projectiles!: ProjectileGroup;
   private canShoot: boolean = true;
-  private ammoCounter: AmmoCounter;
+  private ammoCounter!: AmmoCounter;
 
   constructor(app: Application, projectiles: ProjectileGroup) {
     this.app = app;
@@ -26,14 +32,7 @@ export class PlayerShip {
   }
 
   async init() {
-    const shipSource: TextureSource = await Assets.load("ship");
-
-    if (!shipSource) {
-      console.error(`Ship asset not loaded. The asset is ${shipSource}.`);
-      return;
-    }
-
-    this.ship = Sprite.from(shipSource);
+    this.ship = Sprite.from(AssetLoader.getInstance().getAsset("playerShip"));
     this.ship.anchor.set(0.5);
     this.ship.position.set(
       APP_WIDTH / 2,
@@ -66,20 +65,24 @@ export class PlayerShip {
     }
   }
 
-  public getX() {
-    if (!this.ship) {
-      console.error(`Cannot get X. The ship is ${this.ship}`);
-      return 0;
-    }
+  getProjectiles() {
+    return this.projectiles;
+  }
+
+  get x() {
     return this.ship.position.x;
   }
 
-  public getY() {
-    if (!this.ship) {
-      console.error(`Cannot get Y. The ship is ${this.ship}`);
-      return 0;
-    }
+  get y() {
     return this.ship.position.y;
+  }
+
+  getBoundaries() {
+    return this.ship.getBounds();
+  }
+
+  public resetAmmoCount() {
+    this.ammoCounter.resetAmmoCount();
   }
 
   public update(delta: number) {
@@ -89,4 +92,11 @@ export class PlayerShip {
     this.exhaust?.update(this.ship.position.x, this.movements.getPressedKey()!);
     this.projectiles.update(delta, this.ship.position.x, this.ship.position.y);
   }
+
+  public remove() {
+    this.app.stage.removeChild(this.ship);
+    this.exhaust.remove();
+  }
 }
+
+export const SharedPlayerShip = ShareableMixin(PlayerShip, "PlayerShip");
