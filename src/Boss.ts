@@ -1,10 +1,10 @@
-import { Graphics, Application, Ticker } from "pixi.js";
-import { HealthBar, BossBehavior, constants } from "./";
+import { Application, Ticker, Sprite } from "pixi.js";
+import { HealthBar, BossBehavior, constants, AssetLoader } from "./";
 
 const { MAX_HEALTH } = constants.boss;
 
 export class Boss {
-  private sprite!: Graphics;
+  private sprite!: Sprite;
   private app: Application;
   private radius: number = 50;
   private healthBar!: HealthBar;
@@ -22,29 +22,30 @@ export class Boss {
   }
 
   private init() {
-    this.sprite = new Graphics();
-    this.sprite.beginFill(0xff0000);
-    this.sprite.drawCircle(0, 0, this.radius);
-    this.sprite.endFill();
+    this.sprite = Sprite.from(AssetLoader.getInstance().getAsset("enemyShip"));
+    this.sprite.anchor.set(0.5);
+    this.sprite.zIndex = 2;
+    this.app.stage.addChild(this.sprite);
 
     this.sprite.x = this.app.view.width / 2;
     this.sprite.y = this.radius * 3;
-    this.sprite.zIndex = 2;
-
-    this.app.stage.addChild(this.sprite);
   }
 
   private initHealthBar() {
     this.healthBar = new HealthBar(
       this.app,
       this.sprite.x,
-      this.sprite.y - this.radius - 10,
+      this.sprite.y - this.radius - 20,
       MAX_HEALTH
     );
   }
-  
+
   private initBehavior() {
     this.behavior = new BossBehavior(this.app, this.sprite, true);
+  }
+
+  getProjectiles() {
+    return this.behavior.getProjectiles();
   }
 
   public takeDamage(amount: number) {
@@ -52,15 +53,7 @@ export class Boss {
   }
 
   private attachClickHandler() {
-    this.sprite.eventMode = "static";
-
-    this.sprite.on("pointerdown", () => {
-      this.takeDamage(1);
-      if (this.healthBar.health === 0) {
-        this.animateShaking(1.5);
-        this.healthBar.remove();
-      }
-    });
+    this.app.stage.on("bossDefeated", () => this.animateShaking(1.5), this);
   }
 
   private animateShaking(duration: number) {
@@ -70,21 +63,45 @@ export class Boss {
   }
 
   private handleShaking() {
+    this.healthBar.remove();
+
     if (this.shakeDuration > 0) {
       // random offset to position
-      this.sprite.x += (Math.random() - 0.5) * 10;
-      this.sprite.y += (Math.random() - 0.5) * 10;
+      this.sprite.x += (Math.random() - 0.5) * 2;
+      this.sprite.y += (Math.random() - 0.5) * 2;
       this.shakeDuration--;
 
       if (this.shakeDuration === 0) {
-        this.ticker.remove(this.handleShaking, this);
+        this.sprite.off("bossDefeated");
+        this.ticker.stop();
         this.app.stage.removeChild(this.sprite);
+        this.behavior.remove();
+        this.ticker.remove(this.handleShaking, this);
+        this.remove();
       }
     }
   }
 
-  update(delta: number) {
-    // this.behavior.update(delta);
-    this.healthBar.update(this.sprite.x)
+  get boundaries() {
+    return this.sprite.getBounds();
   }
+
+  get x() {
+    return this.sprite.position.x;
+  }
+
+  get y() {
+    return this.sprite.position.y;
+  }
+
+  update(delta: number) {
+    if (!this.healthBar) return;
+    if (this.healthBar.health === 0) {
+      const winEvent = new CustomEvent("bossDefeated");
+      this.app.stage.emit(winEvent.type, winEvent);
+    }
+    this.healthBar.update(this.sprite.x);
+  }
+
+  remove() {}
 }

@@ -20,7 +20,6 @@ export class MenuScene extends Scene {
   }
 
   async init() {
-    console.log("Entering MenuScene");
     try {
       await this.loadAssets();
       this.setupComponents();
@@ -63,13 +62,11 @@ export class MenuScene extends Scene {
   }
 
   private onGameStart = () => {
-    console.log("Game Start Button Clicked");
     this.sceneManager.changeTo("level-1");
     this.exit();
   };
 
   exit(): void {
-    console.log("Exiting MenuScene");
     this.startButton.remove();
     this.heroText.remove();
   }

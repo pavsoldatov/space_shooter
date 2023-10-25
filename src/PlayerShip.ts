@@ -1,5 +1,11 @@
 import { Application, Assets, Sprite, TextureSource } from "pixi.js";
-import { PlayerMovements, Exhaust, ProjectileGroup, constants } from "./";
+import {
+  PlayerMovements,
+  Exhaust,
+  ProjectileGroup,
+  constants,
+  AssetLoader,
+} from "./";
 import { BoundsChecker, ShareableMixin } from "./utils";
 import { AmmoCounter } from "./UI";
 
@@ -9,7 +15,6 @@ const { SHOOTING_DELAY } = constants.timers;
 export class PlayerShip {
   private app!: Application;
   private movements: PlayerMovements = new PlayerMovements();
-  // private movements: PlayerMovements = new SharedPlayerMovements();
   private ship!: Sprite;
   private boundsChecker!: BoundsChecker;
   private exhaust!: Exhaust;
@@ -27,14 +32,7 @@ export class PlayerShip {
   }
 
   async init() {
-    const shipSource: TextureSource = await Assets.load("ship");
-
-    if (!shipSource) {
-      console.error(`Ship asset not loaded. The asset is ${shipSource}.`);
-      return;
-    }
-
-    this.ship = Sprite.from(shipSource);
+    this.ship = Sprite.from(AssetLoader.getInstance().getAsset("playerShip"));
     this.ship.anchor.set(0.5);
     this.ship.position.set(
       APP_WIDTH / 2,
@@ -67,20 +65,20 @@ export class PlayerShip {
     }
   }
 
-  public getX() {
-    if (!this.ship) {
-      console.error(`Cannot get X. The ship is ${this.ship}`);
-      return 0;
-    }
+  getProjectiles() {
+    return this.projectiles;
+  }
+
+  get x() {
     return this.ship.position.x;
   }
 
-  public getY() {
-    if (!this.ship) {
-      console.error(`Cannot get Y. The ship is ${this.ship}`);
-      return 0;
-    }
+  get y() {
     return this.ship.position.y;
+  }
+
+  getBoundaries() {
+    return this.ship.getBounds();
   }
 
   public resetAmmoCount() {

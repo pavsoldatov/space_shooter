@@ -16,7 +16,7 @@ export class Projectile extends Graphics {
 
     this.direction = direction;
     this.beginFill(0xf18909);
-    this.drawEllipse(0, 5, this.radius * 1, this.radius * 2);
+    this.drawEllipse(0, 5, this.radius * 1.5, this.radius * 2.25);
     this.endFill();
     this.zIndex = 1;
 
@@ -43,9 +43,9 @@ export class Projectile extends Graphics {
 
   update(delta: number) {
     if (this.isActive) {
-      if (this.direction === "up") {
+      if (this.direction === "down") {
         this.y += this.speed * delta;
-      } else if (this.direction === "down") {
+      } else if (this.direction === "up") {
         this.y -= this.speed * delta;
       }
     }
@@ -58,6 +58,13 @@ export class Projectile extends Graphics {
       return this.y - 20 > APP_HEIGHT;
     }
   }
+
+  remove() {
+    if (this.parent) {
+      this.parent.removeChild(this);
+    }
+    this.clear();
+  }
 }
 
 export class ProjectileGroup {
@@ -65,7 +72,7 @@ export class ProjectileGroup {
   projectiles: Projectile[] = [];
   private direction: "up" | "down";
 
-  constructor(app: Application, direction: "up" | "down" = "down") {
+  constructor(app: Application, direction: "up" | "down" = "up") {
     this.app = app;
     this.direction = direction;
   }
@@ -86,12 +93,18 @@ export class ProjectileGroup {
 
   update(delta: number, x: number, y: number) {
     this.projectiles.forEach((p) => {
-      if (p.visible) {
+      if (p.isActive) {
         p.update(delta);
         if (p.isOutsideScreen()) {
           p.resetTo(x, y);
         }
       }
+    });
+  }
+
+  remove() {
+    this.projectiles.forEach((projectile) => {
+      projectile.remove();
     });
   }
 }

@@ -4,9 +4,7 @@ export class SceneManager {
   private scenes: Map<string, Scene> = new Map();
   private currentScene!: Scene;
 
-  constructor() {
-    console.log(this);
-  }
+  constructor() {}
 
   register(name: string, scene: Scene) {
     this.scenes.set(name, scene);

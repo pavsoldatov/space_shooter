@@ -16,7 +16,7 @@ export class CollisionDetector {
     this.hitCounter = hitCounter;
   }
 
-  checkCollisions(shipX: number, shipY: number) {
+  checkPlayerCollisions(shipX: number, shipY: number) {
     const asteroids = this.asteroidGroup.asteroids;
     const projectiles = this.projectileGroup.projectiles;
     for (const asteroid of asteroids) {

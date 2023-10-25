@@ -1,7 +1,12 @@
 import { Application } from "pixi.js";
 import "./style.css";
 import { AssetLoader, constants } from "./";
-import { MenuScene, LevelOneScene, LevelTwoScene, SceneManager } from "./scenes";
+import {
+  MenuScene,
+  LevelOneScene,
+  LevelTwoScene,
+  SceneManager,
+} from "./scenes";
 
 const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
 
@@ -21,12 +26,16 @@ class App {
 
     AssetLoader.getInstance();
 
-    this.sceneManager.register("menu", new MenuScene(this.app, this.sceneManager));
-    this.sceneManager.register("level-1", new LevelOneScene(this.app, this.sceneManager));
+    this.sceneManager.register(
+      "menu",
+      new MenuScene(this.app, this.sceneManager)
+    );
+    this.sceneManager.register(
+      "level-1",
+      new LevelOneScene(this.app, this.sceneManager)
+    );
     this.sceneManager.register("level-2", new LevelTwoScene(this.app));
-    this.sceneManager.changeTo('menu')
-
-    console.log(this.sceneManager)
+    this.sceneManager.changeTo("menu");
   }
 }
 

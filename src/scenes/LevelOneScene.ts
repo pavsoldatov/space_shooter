@@ -6,6 +6,7 @@ import {
   AsteroidGroup,
   ProjectileGroup,
   AssetLoader,
+  constants,
 } from "../";
 import { Scene, SceneManager } from "./";
 import { CollisionDetector } from "../utils";
@@ -14,7 +15,11 @@ import {
   SharedGameTimer,
   HitCounter,
   SharedHitCounter,
+  BitText,
 } from "../UI";
+
+const { APP_WIDTH, APP_HEIGHT } = constants.resolution;
+const { NUM_HITS } = constants.winCondition;
 
 export class LevelOneScene extends Scene {
   private background!: Background;
@@ -26,6 +31,7 @@ export class LevelOneScene extends Scene {
   private hitCounter!: HitCounter;
   private assetLoader: AssetLoader;
   private sceneManager: SceneManager;
+  private transitioning: boolean = false;
 
   constructor(app: Application<HTMLCanvasElement>, sceneManager: SceneManager) {
     super(app);
@@ -55,11 +61,30 @@ export class LevelOneScene extends Scene {
   }
 
   private checkHits(hits: number) {
-    if (hits >= 0) {
-      console.log(hits);
-      this.exit();
-      console.log(this.hitCounter.getHitCount());
-      this.sceneManager.changeTo("level-2");
+    if (hits >= NUM_HITS && !this.transitioning) {
+      this.transitioning = true;
+
+      let countdown = 3;
+
+      const text = new BitText(
+        this.app,
+        APP_WIDTH / 2,
+        APP_HEIGHT / 2,
+        `Level 2 starts in ${countdown} seconds...`
+      );
+      text.setAnchor(0.5, 0.5);
+
+      const countdownInterval = setInterval(() => {
+        countdown--;
+        text.updateText(`Level 2 starts in ${countdown} seconds...`);
+
+        if (countdown === 0) {
+          this.exit();
+          text.remove();
+          clearInterval(countdownInterval);
+          this.sceneManager.changeTo("level-2");
+        }
+      }, 1000);
     }
   }
 
@@ -70,11 +95,11 @@ export class LevelOneScene extends Scene {
     this.gameTimer.update(); // relies on Date.now() instead of delta;
 
     if (this.playerShip && this.collisionDetector) {
-      const x = this.playerShip.getX();
-      const y = this.playerShip.getY();
+      const x = this.playerShip.x;
+      const y = this.playerShip.y;
 
       if (x && y) {
-        this.collisionDetector.checkCollisions(x, y);
+        this.collisionDetector.checkPlayerCollisions(x, y);
       }
     }
 
@@ -82,11 +107,9 @@ export class LevelOneScene extends Scene {
   }
 
   exit() {
-    console.log("Exiting Level-1");
-
     if (this.projectiles && this.playerShip) {
-      const shipX = this.playerShip.getX();
-      const shipY = this.playerShip.getY();
+      const shipX = this.playerShip.x;
+      const shipY = this.playerShip.y;
 
       for (const projectile of this.projectiles.projectiles) {
         if (projectile.isActive) {
@@ -96,7 +119,6 @@ export class LevelOneScene extends Scene {
     }
     this.gameTimer.resetTimer();
     this.playerShip.resetAmmoCount();
-    this.app.render();
 
     this.app.ticker.remove(this.update, this);
     this.background.remove();

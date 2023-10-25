@@ -29,7 +29,6 @@ export class AssetLoader {
     this.loadedBundles.add(bundleName);
 
     if (loadNext) {
-      console.log(loadNext, bundleName)
       this.backgroundLoadNextBundle(bundleName);
     }
   }
@@ -39,10 +38,9 @@ export class AssetLoader {
       (b) => b.name === currentBundleName
     );
     const nextBundle = manifest.bundles[currentBundleIndex + 1];
-    
+
     if (nextBundle) {
       Assets.backgroundLoadBundle([nextBundle.name]);
-      console.log('next is loaded', nextBundle)
     }
   }
 

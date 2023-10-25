@@ -14,7 +14,7 @@ export class StartButton {
     this.button.cursor = "pointer";
 
     const buttonText = new Text(label, { fill: "white" });
-    buttonText.x = (this.button.width - buttonText.width) / 2; // Center text
+    buttonText.x = (this.button.width - buttonText.width) / 2;
     buttonText.y = (this.button.height - buttonText.height) / 2;
 
     this.button.addChild(buttonText);
@@ -34,7 +34,6 @@ export class StartButton {
     this.app.stage.removeChild(this.button);
   }
 
-  // For event handling
   public on(event: string, fn: () => void) {
     this.button.on(event, fn);
   }
