@@ -15,4 +15,9 @@ The game is lost when:
 - You are out of ammo and the 60 seconds of game time are still going;
 
 The game and code design is far from perfect but it kinda works.
+Level 1:
 ![Preview image of how the game looks](https://github.com/pavsoldatov/space_shooter/assets/80415302/7106afdd-8aa7-455f-b13b-d54c6984bb71)
+
+Level 2:
+![image](https://github.com/pavsoldatov/space_shooter/assets/80415302/2c237e14-7a17-457a-8cee-1e6ed964334b)
+
