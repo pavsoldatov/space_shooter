@@ -1,7 +1,8 @@
 A test assignment.
 
 Live: https://space-shooter-nine.vercel.app/
-\nHow to run locally:
+
+How to run locally:
 1. Clone the repo
 2. Run `pnpm i` to install dependencies
 3. Run `pnpm dev` to open the game at `http://localhost:5173/`
